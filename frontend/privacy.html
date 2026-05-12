@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1e88ff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+<title>Privacy Policy — NSE Insights</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; background: rgba(251,248,242,0.88); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+  .nav-inner { max-width: var(--content-wide); margin: 0 auto; padding: 1rem 1.5rem; display:flex; align-items:center; justify-content:space-between; }
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a { color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; }
+  .nav-links a:hover { color: var(--text-primary); }
+  .page { max-width: 780px; margin: 0 auto; padding: 4rem 1.5rem 6rem; }
+  .eyebrow { margin-bottom: 1rem; }
+  h1 { font-family: var(--font-serif); font-size: 2.6rem; letter-spacing: -0.02em; margin-bottom: 0.5rem; }
+  .updated { color: var(--text-muted); font-size: 0.85rem; margin-bottom: 2.5rem; }
+  h2 { font-family: var(--font-serif); font-size: 1.4rem; margin-top: 2.5rem; margin-bottom: 0.8rem; color: var(--navy-900); }
+  body.dark h2 { color: var(--gold-400); }
+  p, li { color: var(--text-secondary); line-height: 1.7; font-size: 0.98rem; }
+  p { margin-bottom: 1rem; }
+  ul { padding-left: 1.2rem; }
+  li { margin-bottom: 0.5rem; }
+  a.inline { color: var(--navy-700); border-bottom: 1px solid var(--gold-500); }
+  body.dark a.inline { color: var(--gold-400); }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0 1.5rem; font-size: 0.9rem; }
+  th, td { border: 1px solid var(--border); padding: 0.7rem 0.9rem; text-align: left; vertical-align: top; }
+  th { background: var(--bg-sunk); color: var(--text-primary); font-weight: 600; }
+  footer { background: var(--navy-900); color: var(--text-on-navy); padding: 2rem 1.5rem; text-align: center; font-size: 0.85rem; }
+  footer a { color: var(--gold-300); }
+</style>
+</head>
+<body class="light">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="landing.html" class="brand"><span class="brand-mark">NSE</span> NSE Insights</a>
+    <div class="nav-links">
+      <a href="landing.html">Home</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="terms.html">Terms</a>
+    </div>
+    <a href="login.html" class="btn btn-outline btn-sm">Sign in</a>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="eyebrow">Legal</div>
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated: 1 April 2026 · Compliant with the Kenya Data Protection Act, 2019.</p>
+
+  <p>NSE Insights Kenya Limited (<strong>we</strong>) respects your privacy. This policy explains what personal data we collect, why we collect it, and the choices you have. We are the data controller for personal data processed through the Service.</p>
+
+  <h2>1. Data we collect</h2>
+  <table>
+    <thead><tr><th>Category</th><th>Examples</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td>Account</td><td>Name, email, encrypted password</td><td>Create and secure your account</td></tr>
+      <tr><td>Billing</td><td>Subscription tier, invoice metadata, last 4 digits of card (from Stripe), M-Pesa receipt numbers</td><td>Process payments, issue receipts</td></tr>
+      <tr><td>Usage</td><td>Pages visited, features used, device and browser info, IP address</td><td>Improve the Service, detect abuse</td></tr>
+      <tr><td>Support</td><td>Emails, chat transcripts</td><td>Respond to your questions</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. Lawful basis for processing</h2>
+  <ul>
+    <li><strong>Contract:</strong> account, billing and core dashboard features;</li>
+    <li><strong>Legitimate interests:</strong> analytics, security, fraud prevention;</li>
+    <li><strong>Consent:</strong> marketing emails (opt-in; unsubscribe any time);</li>
+    <li><strong>Legal obligation:</strong> tax and accounting records, law-enforcement requests.</li>
+  </ul>
+
+  <h2>3. Who we share data with</h2>
+  <p>We use trusted service providers strictly as data processors under written contracts:</p>
+  <ul>
+    <li><strong>Supabase / PostgreSQL hosting</strong> — account and profile storage (data hosted in AWS EU-West-1).</li>
+    <li><strong>Stripe Inc.</strong> — card payments (PCI DSS Level 1). Stripe's privacy notice applies to card data.</li>
+    <li><strong>Safaricom PLC</strong> — M-Pesa payment processing under the Daraja API.</li>
+    <li><strong>Email delivery</strong> (e.g. Resend, Postmark) — transactional emails only.</li>
+  </ul>
+  <p>We do not sell your personal data. We may disclose data if legally compelled, or to protect our rights, users and the public from fraud or harm.</p>
+
+  <h2>4. International transfers</h2>
+  <p>Some processors operate outside Kenya. Transfers rely on standard contractual clauses or equivalent safeguards as required by the Kenya Data Protection Act, 2019.</p>
+
+  <h2>5. How long we keep data</h2>
+  <p>Account data is retained while your account is active and for 24 months after closure. Billing records are retained for 7 years as required by Kenyan tax law. Usage logs are retained for 12 months.</p>
+
+  <h2>6. Your rights</h2>
+  <p>Under the Kenya Data Protection Act, 2019 you can:</p>
+  <ul>
+    <li>Access the data we hold about you;</li>
+    <li>Correct inaccurate data;</li>
+    <li>Delete your account (subject to our legal retention obligations);</li>
+    <li>Export your data in machine-readable format;</li>
+    <li>Object to processing for marketing or legitimate-interest purposes;</li>
+    <li>Lodge a complaint with the Office of the Data Protection Commissioner (<a class="inline" href="https://www.odpc.go.ke">odpc.go.ke</a>).</li>
+  </ul>
+  <p>Email <a class="inline" href="mailto:privacy@nseinsights.co.ke">privacy@nseinsights.co.ke</a> to exercise any of these rights. We respond within 30 days.</p>
+
+  <h2>7. Cookies</h2>
+  <p>We use essential cookies to keep you signed in and to remember preferences (e.g. light/dark mode). We also use anonymous analytics to understand aggregate usage. You can control cookies from your browser settings. We do not use cross-site advertising trackers.</p>
+
+  <h2>8. Security</h2>
+  <p>We use TLS encryption in transit, encryption at rest, role-based access controls, and regular backups. Despite our safeguards, no system is 100% secure — report any suspected incident to <a class="inline" href="mailto:security@nseinsights.co.ke">security@nseinsights.co.ke</a>.</p>
+
+  <h2>9. Children</h2>
+  <p>The Service is not directed at persons under 18. We do not knowingly collect data from minors. If you believe we have, contact us and we'll delete it.</p>
+
+  <h2>10. Contact</h2>
+  <p>NSE Insights Kenya Limited · Nairobi, Kenya · Data Protection Officer: <a class="inline" href="mailto:privacy@nseinsights.co.ke">privacy@nseinsights.co.ke</a>.</p>
+</main>
+
+<footer>
+  © 2026 NSE Insights Kenya Limited · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · Nairobi, Kenya
+</footer>
+
+  <script>
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+  </script>
+</body>
+</html>

@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="description" content="Track NSE market trends, sector performance, top performers, and company financials with a beautifully simple PWA." />
+  <meta name="theme-color" content="#1e88ff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="NSE Insights" />
+  <title>NSE Insights — Live Nairobi Securities Exchange data</title>
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+  <link rel="stylesheet" href="tokens.css" />
+  <style>
+    /* ================ Landing-only ================ */
+    body { background: var(--bg-base); }
+
+    /* Floating pill nav */
+    .nav-wrap {
+      position: sticky; top: 0.75rem; z-index: 50;
+      padding: 0 0.75rem;
+    }
+    @media (min-width: 640px) { .nav-wrap { padding: 0 1.5rem; } }
+    .nav-pill {
+      max-width: 64rem; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0.5rem 0.5rem 0.5rem 1rem;
+      height: 56px;
+    }
+    .nav-pill .nav-brand {
+      display: flex; align-items: center; gap: 0.6rem;
+      color: var(--ink-foreground); text-decoration: none;
+      font-weight: 600; font-size: 0.95rem; letter-spacing: -0.01em;
+    }
+    .nav-pill .nav-brand .mark {
+      width: 32px; height: 32px;
+      background: var(--accent);
+      color: #fff; font-weight: 800;
+      border-radius: 999px;
+      display: grid; place-items: center;
+      font-size: 0.78rem;
+      box-shadow: inset 0 -1px 0 rgba(0,0,0,0.18), 0 1px 0 rgba(255,255,255,0.10);
+    }
+    .nav-links {
+      display: none;
+      position: absolute; left: 50%; transform: translateX(-50%);
+      gap: 0.25rem; align-items: center;
+    }
+    @media (min-width: 768px) { .nav-links { display: flex; } }
+    .nav-links a {
+      position: relative;
+      padding: 0.4rem 1rem; font-size: 0.85rem;
+      color: var(--ink-foreground-65);
+      transition: color 0.15s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--ink-foreground); }
+    .nav-actions { display: flex; align-items: center; gap: 0.5rem; }
+    .nav-cta {
+      display: none;
+      padding: 0.4rem 1.1rem; font-size: 0.85rem; font-weight: 500;
+      background: #fff; color: var(--ink-900);
+      border-radius: 999px;
+      transition: background 0.15s ease;
+    }
+    @media (min-width: 640px) { .nav-cta { display: inline-flex; align-items: center; } }
+    .nav-cta:hover { background: rgba(255,255,255,0.92); color: var(--ink-900); }
+    .nav-burger {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.08);
+      color: var(--ink-foreground);
+      border: 0; border-radius: 999px; cursor: pointer;
+    }
+    @media (min-width: 768px) { .nav-burger { display: none; } }
+    .nav-burger:hover { background: rgba(255,255,255,0.14); }
+
+    /* Mobile drawer (lightweight, transparent backdrop so page stays interactive) */
+    .nav-drawer {
+      position: fixed; inset: 0; z-index: 49;
+      pointer-events: none;
+      visibility: hidden;
+    }
+    .nav-drawer.open { visibility: visible; }
+    .nav-drawer .panel {
+      pointer-events: auto;
+      position: absolute; top: 76px; left: 0.75rem; right: 0.75rem;
+      background: linear-gradient(180deg, var(--ink-800), var(--ink-900));
+      color: var(--ink-foreground);
+      border-radius: 1.25rem;
+      padding: 0.75rem;
+      box-shadow: 0 18px 48px rgba(0,0,0,0.40);
+      transform: translateY(-8px); opacity: 0;
+      transition: transform 0.18s ease, opacity 0.18s ease;
+    }
+    .nav-drawer.open .panel { transform: translateY(0); opacity: 1; }
+    .nav-drawer a, .nav-drawer button {
+      display: block; width: 100%; text-align: left;
+      padding: 0.75rem 1rem; color: var(--ink-foreground);
+      background: transparent; border: 0; font-size: 0.95rem;
+      border-radius: 0.65rem; text-decoration: none;
+    }
+    .nav-drawer a:hover, .nav-drawer button:hover { background: rgba(255,255,255,0.06); }
+
+    /* Hero */
+    .hero { position: relative; overflow: hidden; }
+    .hero-rings { position: absolute; inset: 0; }
+    .hero-glow {
+      position: absolute; top: 5rem; left: 50%; transform: translateX(-50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(closest-side, rgba(30,136,255,0.18), transparent 70%);
+      filter: blur(80px);
+      pointer-events: none; z-index: 0;
+    }
+    .hero-inner {
+      position: relative; z-index: 1;
+      max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem 2rem;
+      text-align: center;
+    }
+    @media (min-width: 640px) { .hero-inner { padding: 5rem 1.5rem 3rem; } }
+    .live-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      background: var(--glass-bg-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      font-size: 0.72rem; color: var(--text-muted);
+      backdrop-filter: blur(12px);
+    }
+    .live-badge .pulse {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gain);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .hero h1 {
+      margin-top: 1.4rem;
+      font-family: var(--font-serif);
+      font-size: clamp(2.4rem, 6vw + 0.5rem, 4.6rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.05;
+      max-width: 56rem; margin-left: auto; margin-right: auto;
+      color: var(--text-primary);
+    }
+    .hero h1 .grad {
+      background: linear-gradient(90deg, var(--blue-500), var(--blue-700));
+      -webkit-background-clip: text; background-clip: text;
+      color: transparent;
+    }
+    .hero p.lede {
+      margin-top: 1.1rem;
+      font-size: clamp(0.95rem, 0.6vw + 0.85rem, 1.05rem);
+      color: var(--text-muted);
+      max-width: 36rem; margin-left: auto; margin-right: auto;
+      line-height: 1.6;
+    }
+    .hero-cta {
+      margin-top: 1.8rem;
+      display: flex; flex-wrap: wrap; gap: 0.75rem;
+      align-items: center; justify-content: center;
+    }
+
+    /* Phone mockups */
+    .phones-stage {
+      position: relative; margin: 3rem auto 0;
+      max-width: 720px;
+      perspective: 1500px;
+    }
+    .phones-row {
+      display: flex; align-items: flex-end; justify-content: center;
+      gap: 0.75rem;
+    }
+    @media (min-width: 640px) { .phones-row { gap: 1.5rem; } }
+    .phone {
+      width: 58%; max-width: 260px;
+      transform-style: preserve-3d;
+    }
+    @media (min-width: 640px) { .phone { width: 44%; } }
+    .phone.left  { transform: translateY(60px) rotateX(8deg) rotateY(-25deg); }
+    .phone.right { transform: translateY(80px) rotateX(8deg) rotateY(25deg); }
+    .phone-frame {
+      position: relative;
+      background: linear-gradient(180deg, var(--ink-800), var(--ink-900));
+      border-radius: 2.75rem;
+      padding: 0.5rem;
+      box-shadow:
+        0 30px 60px -20px rgba(0,0,0,0.35),
+        0 12px 24px -8px rgba(30,136,255,0.18),
+        inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+    .phone-frame .side {
+      position: absolute; top: 2.5rem; bottom: 2.5rem; width: 3px;
+      background: linear-gradient(180deg, transparent, rgba(255,255,255,0.12), transparent);
+    }
+    .phone-frame .side-l { left: -2px; border-radius: 999px 0 0 999px; }
+    .phone-frame .side-r { right: -2px; border-radius: 0 999px 999px 0; }
+    .phone-screen {
+      position: relative; overflow: hidden;
+      background: var(--bg-base);
+      border-radius: 2.25rem;
+    }
+    .phone-notch {
+      position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+      width: 88px; height: 22px;
+      background: #000;
+      border-radius: 999px; z-index: 2;
+    }
+    .phone-status { height: 2.25rem; }
+    .phone-body { padding: 0 1rem 1.25rem; }
+
+    /* Phone card content */
+    .ph-row     { display: flex; align-items: center; justify-content: space-between; }
+    .ph-tiny    { font-size: 0.65rem; color: var(--text-muted); }
+    .ph-small   { font-size: 0.7rem; color: var(--text-muted); }
+    .ph-label   { font-size: 0.7rem; color: var(--text-muted); }
+    .ph-name    { font-size: 0.78rem; font-weight: 500; color: var(--text-primary); }
+    .ph-strong  { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.01em; color: var(--text-primary); }
+    .ph-tab     { padding: 0.5rem 0.4rem; font-size: 0.68rem; font-weight: 500; border-radius: 999px; text-align: center; }
+    .ph-tab.alt { background: linear-gradient(180deg, var(--ink-800), var(--ink-900)); color: var(--ink-foreground); }
+    .ph-tab.cta { background: linear-gradient(180deg, var(--blue-500), var(--blue-700)); color: #fff; box-shadow: 0 4px 12px rgba(30,136,255,0.30); }
+    .ph-list    { margin-top: 0.5rem; display: flex; flex-direction: column; gap: 0.35rem; }
+    .ph-list-item { display: flex; align-items: center; justify-content: space-between; font-size: 0.7rem; }
+    .ph-tile    { width: 22px; height: 22px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-size: 0.55rem; font-weight: 700; }
+    .ph-spark   { height: 56px; margin: 0 -0.25rem 0.5rem; }
+    .ph-spark svg { width: 100%; height: 100%; }
+
+    /* Donut */
+    .donut-wrap { position: relative; height: 120px; display: grid; place-items: center; }
+    .donut-center { position: absolute; inset: 0; display: grid; place-items: center; flex-direction: column; pointer-events: none; }
+    .donut-center .lbl { font-size: 0.65rem; color: var(--text-muted); }
+    .donut-center .val { font-size: 0.95rem; font-weight: 700; color: var(--text-primary); }
+    .donut-legend { margin-top: 0.5rem; display: grid; grid-template-columns: 1fr 1fr; gap: 0.3rem 0.5rem; }
+    .donut-legend .li { display: flex; align-items: center; gap: 0.4rem; font-size: 0.64rem; color: var(--text-muted); }
+    .donut-legend .li .sw { width: 8px; height: 8px; border-radius: 999px; flex: 0 0 auto; }
+    .donut-legend .li .pct { margin-left: auto; color: var(--text-primary); font-weight: 600; }
+
+    /* Sections */
+    .section { max-width: 1100px; margin: 0 auto; padding: 3rem 1.5rem; }
+    .section-head { display: flex; align-items: end; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 0.75rem; }
+    .section-head h2 { font-size: clamp(1.5rem, 1vw + 1.4rem, 2.1rem); font-weight: 700; letter-spacing: -0.015em; }
+    .section-head .eyebrow { font-family: var(--font-sans); }
+
+    /* KPI strip */
+    .kpi-strip { display: grid; gap: 0.75rem; grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 1024px) { .kpi-strip { grid-template-columns: repeat(4, 1fr); } }
+    .kpi-card {
+      background: var(--glass-bg-strong);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-squircle);
+      padding: 1.25rem;
+    }
+    .kpi-card .l { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 500; }
+    .kpi-card .v { margin-top: 0.5rem; font-size: clamp(1.4rem, 0.8vw + 1.1rem, 1.95rem); font-weight: 700; letter-spacing: -0.015em; color: var(--text-primary); }
+    .kpi-card .v.accent { color: var(--accent); }
+    .kpi-card .v.gain   { color: var(--gain); }
+
+    /* Search */
+    .search-wrap { max-width: 38rem; margin: -1rem auto 0; padding: 0 1.5rem; position: relative; z-index: 5; text-align: center; }
+    .search-input {
+      width: 100%; padding: 0.85rem 1rem 0.85rem 2.75rem;
+      font-size: 0.92rem;
+    }
+    .search-icon { position: absolute; left: 2.5rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); pointer-events: none; }
+    .search-hint { margin-top: 0.5rem; font-size: 0.7rem; color: var(--text-muted); }
+
+    /* Sector grid + top performers */
+    .grid-3 { display: grid; gap: 0.85rem; grid-template-columns: 1fr; }
+    @media (min-width: 640px) { .grid-3 { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1024px) { .grid-3 { grid-template-columns: repeat(3, 1fr); } }
+
+    .perf-card {
+      background: var(--glass-bg-strong);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-squircle);
+      padding: 1.25rem;
+    }
+    .perf-card h3 { font-family: var(--font-sans); font-size: 0.92rem; font-weight: 600; }
+    .perf-card ul { list-style: none; padding: 0; margin: 0.85rem 0 0; display: flex; flex-direction: column; gap: 0.65rem; }
+    .perf-card li { display: flex; align-items: center; justify-content: space-between; font-size: 0.85rem; gap: 0.5rem; }
+    .perf-card li .who { display: flex; align-items: center; gap: 0.6rem; min-width: 0; }
+    .perf-card li .tile {
+      width: 26px; height: 26px; border-radius: 999px;
+      background: var(--accent-soft); color: var(--accent);
+      display: grid; place-items: center;
+      font-size: 0.7rem; font-weight: 700; flex: 0 0 auto;
+    }
+    .perf-card li .who .nm { color: var(--text-primary); font-weight: 500; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .perf-card li .val { font-weight: 600; color: var(--text-primary); white-space: nowrap; }
+    .perf-card li .val.gain { color: var(--gain); }
+    .perf-card li .val.accent { color: var(--accent); }
+
+    .sector-card {
+      background: var(--glass-bg-strong);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-squircle);
+      padding: 1.1rem 1.2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: transform 0.18s ease, border-color 0.18s ease;
+      text-decoration: none;
+    }
+    .sector-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+    .sector-card .name { color: var(--text-primary); font-weight: 600; }
+    .sector-card .meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
+    .sector-card .arrow { color: var(--accent); font-size: 1.2rem; line-height: 1; }
+
+    /* Big CTA card (ink) */
+    .cta-card {
+      background: linear-gradient(180deg, var(--ink-800), var(--ink-900));
+      color: var(--ink-foreground);
+      border-radius: var(--radius-squircle-lg);
+      padding: 3rem 2rem;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    @media (min-width: 640px) { .cta-card { padding: 4rem 3rem; } }
+    .cta-card::before {
+      content: ""; position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 280px;
+      background: radial-gradient(closest-side, rgba(30,136,255,0.30), transparent 70%);
+      filter: blur(80px);
+      pointer-events: none;
+    }
+    .cta-card > * { position: relative; }
+    .cta-card h2 { font-size: clamp(2rem, 2vw + 1.5rem, 3rem); color: var(--ink-foreground); }
+    .cta-card p { color: var(--ink-foreground-65); margin-top: 1rem; max-width: 32rem; margin-left: auto; margin-right: auto; }
+    .cta-card .row { margin-top: 2rem; display: flex; flex-wrap: wrap; justify-content: center; gap: 0.75rem; }
+
+    /* Footer */
+    footer.site {
+      border-top: 1px solid var(--border);
+      padding: 2rem 1.5rem; max-width: 1100px; margin: 0 auto;
+      display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0.75rem;
+    }
+    footer.site .links { display: flex; gap: 1.25rem; flex-wrap: wrap; }
+    footer.site .links a { color: var(--text-muted); font-size: 0.85rem; }
+    footer.site .links a:hover { color: var(--text-primary); }
+    footer.site .copy { font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Reveal animation */
+    .reveal { opacity: 0; transform: translateY(12px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .reveal.show { opacity: 1; transform: translateY(0); }
+
+    /* Reduce motion */
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .live-badge .pulse { animation: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Floating pill nav (sits inside an ink-surface for that Lovable feel) -->
+  <div class="nav-wrap">
+    <nav class="ink-surface pill nav-pill">
+      <a class="nav-brand" href="landing.html">
+        <span class="mark">N</span>
+        <span>NSE Insights</span>
+      </a>
+      <div class="nav-links" aria-label="Primary">
+        <a href="landing.html" class="active">Home</a>
+        <a href="index.html">Dashboard</a>
+        <a href="index.html#sectors">Sectors</a>
+        <a href="pricing.html">Pricing</a>
+      </div>
+      <div class="nav-actions">
+        <a href="login.html" class="nav-cta pill">Sign In</a>
+        <button class="nav-burger" aria-label="Toggle menu" id="nav-burger">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+            <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <div class="nav-drawer" id="nav-drawer" aria-hidden="true">
+    <div class="panel">
+      <a href="landing.html">Home</a>
+      <a href="index.html">Dashboard</a>
+      <a href="index.html#sectors">Sectors</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="login.html">Sign In</a>
+      <a href="login.html#signup">Get started</a>
+      <button onclick="openFeedback(); document.getElementById('nav-drawer').classList.remove('open');">Send Feedback</button>
+    </div>
+  </div>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-rings"></div>
+      <div class="hero-glow"></div>
+      <div class="hero-inner">
+        <div class="live-badge reveal">
+          <span class="pulse"></span>
+          Nairobi Securities Exchange · Live data
+        </div>
+        <h1 class="reveal">All NSE Insights <span class="grad">in the palm</span> of your hand</h1>
+        <p class="lede reveal">Track market trends, dive into sector performance, and explore company financials — built for first-time investors and seasoned analysts alike.</p>
+        <div class="hero-cta reveal">
+          <a class="ghost-button pill" href="index.html#sectors" style="padding: 0.65rem 1.4rem;">Browse Sectors</a>
+          <a class="metallic-button pill" href="login.html#signup" style="padding: 0.7rem 1.5rem; font-weight: 600;">Get Started</a>
+        </div>
+
+        <!-- Phone mockups -->
+        <div class="phones-stage">
+          <div class="phones-row">
+
+            <!-- LEFT PHONE: NSE 20 Index card -->
+            <div class="phone left reveal">
+              <div class="phone-frame">
+                <div class="side side-l"></div>
+                <div class="side side-r"></div>
+                <div class="phone-screen">
+                  <div class="phone-notch"></div>
+                  <div class="phone-status"></div>
+                  <div class="phone-body">
+                    <div class="ph-row" style="margin-top:0.25rem;">
+                      <span class="ph-small" style="display:inline-flex; align-items:center; gap:0.4rem;">
+                        <span style="width:6px;height:6px;background:var(--gain);border-radius:50%;"></span>Live · NSE
+                      </span>
+                      <span class="ph-small">Today</span>
+                    </div>
+                    <p class="ph-label" style="margin-top:0.6rem;">NSE 20 Share Index</p>
+                    <div style="display:flex;align-items:baseline;gap:0.5rem;margin-top:0.15rem;">
+                      <span class="ph-strong">1,742.56</span>
+                      <span class="text-gain" style="font-size:0.7rem;font-weight:600;">+12.34 (0.71%)</span>
+                    </div>
+                    <div class="ph-spark">
+                      <svg viewBox="0 0 200 60" preserveAspectRatio="none">
+                        <defs>
+                          <linearGradient id="sparkA" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stop-color="#1e88ff" stop-opacity="0.35" />
+                            <stop offset="100%" stop-color="#1e88ff" stop-opacity="0" />
+                          </linearGradient>
+                        </defs>
+                        <path d="M0,42 L18,38 L36,40 L54,32 L72,34 L90,28 L108,30 L126,22 L144,26 L162,18 L180,20 L200,12 L200,60 L0,60 Z" fill="url(#sparkA)" />
+                        <path d="M0,42 L18,38 L36,40 L54,32 L72,34 L90,28 L108,30 L126,22 L144,26 L162,18 L180,20 L200,12" stroke="#1e88ff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </div>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.45rem;">
+                      <button class="ph-tab alt">📊 Trends</button>
+                      <button class="ph-tab cta">Explore</button>
+                    </div>
+                    <div class="ph-list" style="margin-top:0.7rem;">
+                      <div class="ph-list-item">
+                        <span class="who" style="display:flex;align-items:center;gap:0.4rem;">
+                          <span class="ph-tile">SC</span>
+                          <span class="ph-name">SCOM</span>
+                        </span>
+                        <span class="text-gain" style="font-weight:600;">+4.59%</span>
+                      </div>
+                      <div class="ph-list-item">
+                        <span class="who" style="display:flex;align-items:center;gap:0.4rem;">
+                          <span class="ph-tile">EQ</span>
+                          <span class="ph-name">EQTY</span>
+                        </span>
+                        <span class="text-gain" style="font-weight:600;">+3.64%</span>
+                      </div>
+                      <div class="ph-list-item">
+                        <span class="who" style="display:flex;align-items:center;gap:0.4rem;">
+                          <span class="ph-tile">KC</span>
+                          <span class="ph-name">KCB</span>
+                        </span>
+                        <span class="text-gain" style="font-weight:600;">+2.18%</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT PHONE: Sector PAT mix donut -->
+            <div class="phone right reveal">
+              <div class="phone-frame">
+                <div class="side side-l"></div>
+                <div class="side side-r"></div>
+                <div class="phone-screen">
+                  <div class="phone-notch"></div>
+                  <div class="phone-status"></div>
+                  <div class="phone-body">
+                    <div class="ph-row" style="margin-top:0.25rem;">
+                      <span class="ph-small">Sector PAT mix</span>
+                      <span class="ph-tiny">FY 2024</span>
+                    </div>
+                    <p class="ph-label" style="margin-top:0.5rem;">Total Sector PAT</p>
+                    <p class="ph-strong" style="margin-top:0.1rem;">KES 340B</p>
+
+                    <div class="donut-wrap" style="margin-top:0.4rem;">
+                      <svg viewBox="0 0 42 42" style="width:120px;height:120px;transform:rotate(-90deg);">
+                        <!-- Banking 64.7% -->
+                        <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#1976d2" stroke-width="6.5"
+                                stroke-dasharray="64.7 35.3" stroke-dashoffset="0" />
+                        <!-- Telecoms 20.5% -->
+                        <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#16a34a" stroke-width="6.5"
+                                stroke-dasharray="20.5 79.5" stroke-dashoffset="-64.7" />
+                        <!-- Energy 7.2% -->
+                        <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#d97706" stroke-width="6.5"
+                                stroke-dasharray="7.2 92.8" stroke-dashoffset="-85.2" />
+                        <!-- Other 7.6% -->
+                        <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#94a3b8" stroke-width="6.5"
+                                stroke-dasharray="7.6 92.4" stroke-dashoffset="-92.4" />
+                      </svg>
+                      <div class="donut-center">
+                        <div style="text-align:center;">
+                          <div class="val">KES 220B</div>
+                          <div class="lbl">Banking lead</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="donut-legend">
+                      <div class="li"><span class="sw" style="background:#1976d2;"></span>Banking<span class="pct">65%</span></div>
+                      <div class="li"><span class="sw" style="background:#16a34a;"></span>Telecom<span class="pct">21%</span></div>
+                      <div class="li"><span class="sw" style="background:#d97706;"></span>Energy<span class="pct">7%</span></div>
+                      <div class="li"><span class="sw" style="background:#94a3b8;"></span>Other<span class="pct">7%</span></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="position:absolute;left:0;right:0;bottom:-2rem;height:120px;background:linear-gradient(to top, var(--bg-base), transparent);pointer-events:none;"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEARCH -->
+    <section class="search-wrap">
+      <div style="position:relative;">
+        <span class="search-icon">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3" stroke-linecap="round"/></svg>
+        </span>
+        <input type="text" class="metallic-input squircle-sm search-input" placeholder="Search companies or tickers..." aria-label="Search companies"
+               id="landing-search" autocomplete="off" />
+      </div>
+      <p class="search-hint">Try "Safaricom", "EQTY" or "KCB" — opens the dashboard</p>
+    </section>
+
+    <!-- MARKET OVERVIEW -->
+    <section class="section">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Market Overview</p>
+          <h2>Live snapshot of the NSE</h2>
+        </div>
+      </div>
+      <div class="kpi-strip">
+        <div class="kpi-card reveal"><p class="l">Listed Companies</p><p class="v" id="kpi-companies">41</p></div>
+        <div class="kpi-card reveal"><p class="l">Sectors Tracked</p><p class="v" id="kpi-sectors">9</p></div>
+        <div class="kpi-card reveal"><p class="l">Combined Revenue</p><p class="v accent" id="kpi-revenue">KES 1.1T</p></div>
+        <div class="kpi-card reveal"><p class="l">Top Net Margin</p><p class="v gain" id="kpi-margin">47.8%</p></div>
+      </div>
+    </section>
+
+    <!-- TOP PERFORMERS -->
+    <section class="section" id="top-performers">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Top Performers</p>
+          <h2>Leaders driving the index</h2>
+        </div>
+        <a href="index.html" class="ghost-button pill">View dashboard →</a>
+      </div>
+      <div class="grid-3">
+        <div class="perf-card reveal">
+          <h3>Top Revenue (FY 2024)</h3>
+          <ul>
+            <li><span class="who"><span class="tile">SC</span><span class="nm">Safaricom PLC</span></span><span class="val">KES 388.7B</span></li>
+            <li><span class="who"><span class="tile">KP</span><span class="nm">Kenya Power</span></span><span class="val">KES 219.3B</span></li>
+            <li><span class="who"><span class="tile">EQ</span><span class="nm">Equity Group</span></span><span class="val">KES 219.0B</span></li>
+            <li><span class="who"><span class="tile">KC</span><span class="nm">KCB Group</span></span><span class="val">KES 204.9B</span></li>
+            <li><span class="who"><span class="tile">CO</span><span class="nm">Co-op Bank</span></span><span class="val">KES 87.5B</span></li>
+          </ul>
+        </div>
+        <div class="perf-card reveal">
+          <h3>Top Net Income</h3>
+          <ul>
+            <li><span class="who"><span class="tile">SC</span><span class="nm">Safaricom PLC</span></span><span class="val accent">KES 69.7B</span></li>
+            <li><span class="who"><span class="tile">KC</span><span class="nm">KCB Group</span></span><span class="val accent">KES 60.1B</span></li>
+            <li><span class="who"><span class="tile">EQ</span><span class="nm">Equity Group</span></span><span class="val accent">KES 46.5B</span></li>
+            <li><span class="who"><span class="tile">CO</span><span class="nm">Co-op Bank</span></span><span class="val accent">KES 25.5B</span></li>
+            <li><span class="who"><span class="tile">KP</span><span class="nm">Kenya Power</span></span><span class="val accent">KES 24.5B</span></li>
+          </ul>
+        </div>
+        <div class="perf-card reveal">
+          <h3>Best Net Margin</h3>
+          <ul>
+            <li><span class="who"><span class="tile">CA</span><span class="nm">Carbacid</span></span><span class="val gain">47.8%</span></li>
+            <li><span class="who"><span class="tile">KC</span><span class="nm">KCB Group</span></span><span class="val gain">29.3%</span></li>
+            <li><span class="who"><span class="tile">EQ</span><span class="nm">Equity Group</span></span><span class="val gain">21.2%</span></li>
+            <li><span class="who"><span class="tile">CO</span><span class="nm">Co-op Bank</span></span><span class="val gain">29.2%</span></li>
+            <li><span class="who"><span class="tile">SC</span><span class="nm">Safaricom PLC</span></span><span class="val gain">17.9%</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTORS -->
+    <section class="section" id="sectors">
+      <div class="section-head">
+        <div>
+          <p class="eyebrow">Sectors</p>
+          <h2>Performance by industry</h2>
+        </div>
+        <a href="index.html#sectors" class="ghost-button pill">All sectors →</a>
+      </div>
+      <div class="grid-3">
+        <a class="sector-card reveal" href="index.html#sector=Banking">
+          <div><div class="name">Banking</div><div class="meta">11 listings · KES 220B PAT · 65% of total</div></div>
+          <span class="arrow">→</span>
+        </a>
+        <a class="sector-card reveal" href="index.html#sector=Telecoms+%26+Technology">
+          <div><div class="name">Telecoms &amp; Technology</div><div class="meta">3 listings · KES 70B PAT · 21%</div></div>
+          <span class="arrow">→</span>
+        </a>
+        <a class="sector-card reveal" href="index.html#sector=Energy+%26+Utilities">
+          <div><div class="name">Energy &amp; Utilities</div><div class="meta">3 listings · KES 24B PAT · 7%</div></div>
+          <span class="arrow">→</span>
+        </a>
+        <a class="sector-card reveal" href="index.html#sector=Consumer+Goods">
+          <div><div class="name">Consumer Goods</div><div class="meta">7 listings · KES 19B PAT · 5%</div></div>
+          <span class="arrow">→</span>
+        </a>
+        <a class="sector-card reveal" href="index.html#sector=Insurance">
+          <div><div class="name">Insurance</div><div class="meta">5 listings · KES 6B PAT · 2%</div></div>
+          <span class="arrow">→</span>
+        </a>
+        <a class="sector-card reveal" href="index.html#sector=Manufacturing">
+          <div><div class="name">Manufacturing</div><div class="meta">5 listings · diverse exposure</div></div>
+          <span class="arrow">→</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- BIG CTA -->
+    <section class="section" style="padding-bottom: 4rem;">
+      <div class="cta-card reveal">
+        <h2>Ready to make sense of the NSE?</h2>
+        <p>Join investors using NSE Insights to track, explore, and decide — all in one beautifully simple app.</p>
+        <div class="row">
+          <a class="metallic-button pill" href="login.html#signup" style="padding: 0.85rem 1.75rem;">Create Free Account</a>
+          <a class="ghost-button pill" href="pricing.html" style="background: rgba(255,255,255,0.10); color: var(--ink-foreground); border-color: rgba(255,255,255,0.18); padding: 0.85rem 1.75rem;">See Pricing</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div style="display:flex;align-items:center;gap:0.5rem;">
+      <span class="brand-mark" style="width:24px;height:24px;font-size:0.7rem;border-radius:999px;">N</span>
+      <span style="font-weight:600;font-size:0.92rem;">NSE Insights</span>
+    </div>
+    <div class="links">
+      <a href="index.html">Dashboard</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="privacy.html">Privacy</a>
+      <a href="terms.html">Terms</a>
+      <a href="login.html">Sign in</a>
+      <a href="#" onclick="openFeedback(); return false;">Feedback</a>
+    </div>
+    <div class="copy">© 2026 NSE Insights · Data from public filings</div>
+  </footer>
+
+  <script>
+    // Burger
+    const burger = document.getElementById('nav-burger');
+    const drawer = document.getElementById('nav-drawer');
+    burger.addEventListener('click', () => {
+      const open = !drawer.classList.contains('open');
+      drawer.classList.toggle('open', open);
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+    });
+    document.addEventListener('click', (e) => {
+      if (!drawer.classList.contains('open')) return;
+      if (drawer.contains(e.target) || burger.contains(e.target)) return;
+      drawer.classList.remove('open');
+    });
+
+    // Search → dashboard
+    const search = document.getElementById('landing-search');
+    if (search) {
+      search.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+          const q = encodeURIComponent(search.value.trim());
+          if (q) window.location.href = `index.html?search=${q}`;
+        }
+      });
+    }
+
+    // Reveal on intersection
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('show'); obs.unobserve(e.target); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+
+    // Service worker registration (PWA)
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(()=>{});
+      });
+    }
+  </script>
+
+  <script src="config.js"></script>
+  <script src="feedback.js?v=1"></script>
+</body>
+</html>

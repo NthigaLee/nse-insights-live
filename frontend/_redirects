@@ -1,0 +1,11 @@
+# Cloudflare Pages — redirects + rewrites.
+# https://developers.cloudflare.com/pages/configuration/redirects/
+
+# Bare root → landing page (the marketing site)
+/             /landing.html         200
+
+# Old/short paths
+/home         /landing.html         301
+/dashboard    /index.html           301
+/signup       /login.html           301
+/signin       /login.html           301

@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+requests
+httpx
+beautifulsoup4
+lxml
+pdfplumber
+pydantic[email]
+stripe
+python-dotenv

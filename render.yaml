@@ -1,0 +1,75 @@
+# Render Blueprint — NSE Insights payments backend.
+# When you connect this repo at render.com → New → Blueprint, Render
+# will read this file and offer to provision the service automatically.
+#
+# After creation, fill in the env vars marked `sync: false` from the
+# Render dashboard (secret values from Stripe + Supabase + Daraja).
+services:
+  - type: web
+    name: nse-insights-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn payments_server:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12"
+
+      # Frontend URL used for Stripe redirect URLs (https only, no trailing slash)
+      - key: FRONTEND_URL
+        sync: false
+
+      # Comma-separated allowed origins for CORS
+      - key: CORS_ORIGINS
+        sync: false
+
+      # Supabase
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+
+      # Stripe
+      - key: STRIPE_SECRET_KEY
+        sync: false
+      - key: STRIPE_WEBHOOK_SECRET
+        sync: false
+      - key: STRIPE_PRICE_TRADER_MO
+        sync: false
+      - key: STRIPE_PRICE_TRADER_YR
+        sync: false
+      - key: STRIPE_PRICE_PRO_MO
+        sync: false
+      - key: STRIPE_PRICE_PRO_YR
+        sync: false
+
+      # M-Pesa (Daraja)
+      - key: MPESA_CONSUMER_KEY
+        sync: false
+      - key: MPESA_CONSUMER_SECRET
+        sync: false
+      - key: MPESA_SHORTCODE
+        value: "174379"
+      - key: MPESA_PASSKEY
+        sync: false
+      - key: MPESA_CALLBACK_URL
+        sync: false
+      - key: MPESA_ENV
+        value: sandbox
+
+      # SMTP (optional — for feedback emails). Leave blank to log only.
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: "587"
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASS
+        sync: false
+      - key: SMTP_FROM
+        sync: false
+      - key: FEEDBACK_EMAIL_TO
+        value: feedback@nseinsights.co.ke

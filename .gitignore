@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Temp/debug files
+*.log
+extract_output.txt
+extract_log.txt
+
+# Claude internal
+.claude/
+
+# Added for NSE Insights Cloudflare deploy
+.env
+.env.*
+!.env.example
+venv/
+backend/venv/
+backend/__pycache__/
+node_modules/
+.DS_Store
+*.bak
+frontend/_backup/
+
+# Heavy source data (PDFs, raw fetched reports) — stays local, not deployed
+# These are 600MB+ of source PDFs the extractors used; the structured data
+# is already baked into frontend/data.js and data/prices/.
+data/nse/
+data/absa_ir/
+data/absa_review/
+
+# Stray scratch + audit txt
+err.txt
+output.txt
+audit_report.txt
+audit_report2.txt
+backend/err.txt
+backend/output.txt
+backend/extract_log.txt
+safaricom_audit.txt
+test_results.txt
+
+# Per-company source PDFs (used locally by admin_review viewer).
+# Re-host these on R2 / Cloudinary / Box later if you want the viewer in prod.
+frontend/data/companies/*/documents/
+
+# Dev-only scratch + extraction dumps
+backend/_pdf_dumps/
+frontend/_writetest.tmp
+frontend/_legal-shared.html
+docs/
+
+# Misc historic scratch + reports — never needed at runtime
+audit_data.py
+check_data.py
+check_data2.py
+diag.py
+sort_uneb.py
+run_agent.ps1
+agent_task.md
+OVERNIGHT_TASK.md
+audit_report.txt
+audit_report2.txt
+extract_log.txt
+extract_output.txt

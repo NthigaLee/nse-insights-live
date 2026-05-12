@@ -1,0 +1,17 @@
+{
+  "name": "NSE Insights",
+  "short_name": "NSE Insights",
+  "description": "Live Nairobi Securities Exchange data, sector deep-dives and company financials.",
+  "start_url": "/landing.html",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#fbf8f2",
+  "theme_color": "#1e88ff",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ],
+  "categories": ["finance", "business", "productivity"]
+}

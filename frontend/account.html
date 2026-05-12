@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1e88ff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+<title>My account — NSE Insights</title>
+<link rel="stylesheet" href="tokens.css" />
+<style>
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(251, 248, 242, 0.88);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  .nav-inner {
+    max-width: var(--content-wide);
+    margin: 0 auto;
+    padding: 1rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a { color: var(--text-secondary); font-size: 0.9rem; font-weight: 500; }
+  .nav-links a:hover { color: var(--text-primary); }
+
+  .page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+  .page-header {
+    margin-bottom: 2.5rem;
+    display: flex; justify-content: space-between; align-items: flex-end; gap: 1rem;
+    flex-wrap: wrap;
+  }
+  .page-header h1 {
+    font-family: var(--font-serif);
+    font-size: 2.2rem;
+    letter-spacing: -0.02em;
+  }
+  .page-header p { color: var(--text-muted); font-size: 0.95rem; margin-top: 0.3rem; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr;
+    gap: 1.5rem;
+  }
+  @media (max-width: 820px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.8rem;
+  }
+  .card h2 {
+    font-family: var(--font-serif);
+    font-size: 1.15rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .profile-row {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: var(--navy-900);
+    color: var(--gold-400);
+    display: grid; place-items: center;
+    font-family: var(--font-serif);
+    font-size: 1.3rem;
+    font-weight: 700;
+  }
+  .profile-info .name { font-weight: 600; color: var(--text-primary); }
+  .profile-info .email { font-size: 0.85rem; color: var(--text-muted); }
+
+  .field {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid var(--border-dim);
+    font-size: 0.9rem;
+  }
+  .field:last-child { border-bottom: none; }
+  .field .label { color: var(--text-muted); }
+  .field .value { color: var(--text-primary); font-weight: 500; }
+
+  .tier-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.3rem 0.8rem;
+    background: var(--gold-100);
+    color: var(--gold-700);
+    border: 1px solid var(--border-gold);
+    border-radius: 99px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  .tier-badge.free { background: var(--navy-050); color: var(--navy-700); border-color: var(--border); }
+  body.dark .tier-badge.free { background: rgba(10,37,64,0.35); color: var(--navy-300); }
+
+  .sub-status {
+    padding: 0.9rem 1.1rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1.5rem;
+    font-size: 0.88rem;
+  }
+  .sub-status.active { background: var(--up-soft); color: var(--up); border: 1px solid rgba(15,157,88,0.2); }
+  .sub-status.inactive { background: var(--bg-sunk); color: var(--text-secondary); border: 1px solid var(--border); }
+
+  .plan-snapshot {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+  .plan-cell {
+    padding: 0.9rem;
+    background: var(--bg-sunk);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+  }
+  .plan-cell .label { color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.25rem; }
+  .plan-cell .value { font-weight: 600; color: var(--text-primary); }
+
+  .btn-danger {
+    background: transparent;
+    color: var(--down);
+    border: 1px solid rgba(192,57,43,0.3);
+  }
+  .btn-danger:hover { background: var(--down-soft); border-color: var(--down); }
+
+  .divider-soft { height: 1px; background: var(--border); margin: 1.2rem 0; }
+
+  .actions { display: flex; flex-direction: column; gap: 0.55rem; }
+  .row-actions { display: flex; gap: 0.55rem; flex-wrap: wrap; }
+</style>
+</head>
+<body class="light">
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="landing.html" class="brand">
+      <span class="brand-mark">NSE</span>
+      NSE Insights
+    </a>
+    <div class="nav-links">
+      <a href="index.html">Dashboard</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="account.html" style="color: var(--text-primary); font-weight: 600;">Account</a>
+    </div>
+    <div>
+      <button class="btn btn-outline btn-sm" id="signOutBtnTop">Sign out</button>
+    </div>
+  </div>
+</nav>
+
+<main class="page">
+  <div class="page-header">
+    <div>
+      <h1>Your account</h1>
+      <p>Manage your profile, plan and payment method.</p>
+    </div>
+    <a href="index.html" class="btn btn-ghost btn-sm">← Back to dashboard</a>
+  </div>
+
+  <div class="grid">
+    <!-- Profile -->
+    <section class="card">
+      <h2>Profile</h2>
+      <div class="profile-row">
+        <div class="avatar" id="avatar">—</div>
+        <div class="profile-info">
+          <div class="name" id="profileName">Not signed in</div>
+          <div class="email" id="profileEmail"></div>
+        </div>
+      </div>
+      <div class="field"><span class="label">Account ID</span><span class="value mono" id="userId" style="font-size: 0.75rem;">—</span></div>
+      <div class="field"><span class="label">Member since</span><span class="value" id="memberSince">—</span></div>
+      <div class="field"><span class="label">Last sign-in</span><span class="value" id="lastSignIn">—</span></div>
+
+      <div class="divider-soft"></div>
+
+      <div class="actions">
+        <button class="btn btn-outline" onclick="resetPassword()">Change password</button>
+        <button class="btn btn-danger" id="signOutBtn">Sign out</button>
+      </div>
+    </section>
+
+    <!-- Subscription -->
+    <section class="card">
+      <h2>
+        Subscription
+        <span class="tier-badge" id="tierBadge">FREE</span>
+      </h2>
+
+      <div class="sub-status inactive" id="subStatus">You're on the free tier. Upgrade any time to unlock historical data and exports.</div>
+
+      <div class="plan-snapshot">
+        <div class="plan-cell">
+          <div class="label">Plan</div>
+          <div class="value" id="planName">Free</div>
+        </div>
+        <div class="plan-cell">
+          <div class="label">Billing</div>
+          <div class="value" id="planInterval">—</div>
+        </div>
+        <div class="plan-cell">
+          <div class="label">Next charge</div>
+          <div class="value" id="nextCharge">—</div>
+        </div>
+        <div class="plan-cell">
+          <div class="label">Payment method</div>
+          <div class="value" id="paymentMethod">—</div>
+        </div>
+      </div>
+
+      <div class="row-actions">
+        <a href="pricing.html" class="btn btn-primary" id="upgradeBtn">Upgrade</a>
+        <button class="btn btn-outline" id="manageBillingBtn" onclick="manageBilling()" style="display:none;">Manage billing</button>
+        <button class="btn btn-danger" id="cancelBtn" onclick="cancelSubscription()" style="display:none;">Cancel subscription</button>
+      </div>
+
+      <div class="divider-soft"></div>
+
+      <h3 style="font-family: var(--font-serif); font-size: 1rem; margin-bottom: 0.7rem;">Your tier includes</h3>
+      <ul id="tierFeatures" style="padding-left: 1.1rem; color: var(--text-secondary); font-size: 0.88rem; line-height: 1.7; margin: 0;"></ul>
+    </section>
+  </div>
+
+  <!-- Billing history (placeholder) -->
+  <section class="card" style="margin-top: 1.5rem;">
+    <h2>Billing history</h2>
+    <p style="color: var(--text-muted); font-size: 0.9rem;" id="billingEmpty">No invoices yet. Once you upgrade, your receipts (with KRA PIN) will appear here.</p>
+  </section>
+</main>
+
+<script>
+  window.NSE_CONFIG = window.NSE_CONFIG || { SUPABASE_URL: '', SUPABASE_ANON_KEY: '', PAYMENTS_API: '' };
+</script>
+<script src="config.js"></script>
+  <script src="supabase-client.js"></script>
+<script src="tier-access.js"></script>
+<script>
+  // Sign out handlers
+  async function doSignOut() {
+    try {
+      if (window.AuthAPI && window.AuthAPI.signOut) {
+        await window.AuthAPI.signOut();
+      }
+    } catch (e) { console.warn(e); }
+    localStorage.removeItem('userTier');
+    localStorage.removeItem('subscription_status');
+    localStorage.removeItem('subscription_plan');
+    localStorage.removeItem('subscription_interval');
+    sessionStorage.clear();
+    window.location.href = 'landing.html';
+  }
+  document.getElementById('signOutBtn').addEventListener('click', doSignOut);
+  document.getElementById('signOutBtnTop').addEventListener('click', doSignOut);
+
+  async function resetPassword() {
+    const email = document.getElementById('profileEmail').textContent;
+    if (!email) { alert('Please sign in first.'); return; }
+    if (!window.AuthAPI || !window.AuthAPI.resetPassword) {
+      alert('Password reset is only available in production mode.');
+      return;
+    }
+    try {
+      await window.AuthAPI.resetPassword(email);
+      alert('Password reset email sent to ' + email);
+    } catch (e) {
+      alert('Could not send reset email: ' + e.message);
+    }
+  }
+
+  async function manageBilling() {
+    alert('Opening billing portal… (requires payments backend to be configured).');
+  }
+
+  async function cancelSubscription() {
+    if (!confirm('Cancel your subscription? You\'ll keep access until the end of the current billing period.')) return;
+    // Demo: downgrade locally
+    localStorage.setItem('subscription_status', 'cancelled');
+    localStorage.setItem('userTier', 'free');
+    alert('Subscription cancelled. You\'ll keep Pro features until the end of the current period.');
+    location.reload();
+  }
+
+  async function loadAccount() {
+    let user = null;
+    let tier = localStorage.getItem('userTier') || 'free';
+
+    if (window.AuthAPI) {
+      try {
+        user = await window.AuthAPI.getUser();
+      } catch (e) { console.warn(e); }
+      try {
+        const t = await window.AuthAPI.getTier();
+        if (t) tier = t;
+      } catch (e) { /* ignore */ }
+    }
+
+    // In demo mode, synthesise a user record
+    if (!user && window.AuthAPI && window.AuthAPI.DEMO_MODE) {
+      const demoEmail = localStorage.getItem('demo_email') || 'demo@nseinsights.co.ke';
+      const demoName  = localStorage.getItem('demo_name')  || 'Demo User';
+      user = { id: 'demo-' + demoEmail, email: demoEmail, user_metadata: { full_name: demoName }, created_at: new Date().toISOString() };
+    }
+
+    if (!user) {
+      // Not authenticated — send to login
+      window.location.href = 'login.html?redirect=account.html';
+      return;
+    }
+
+    const name = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name)) || user.email.split('@')[0];
+    const initials = name.split(/\s+/).map(x => x[0]).slice(0, 2).join('').toUpperCase() || 'U';
+    document.getElementById('avatar').textContent = initials;
+    document.getElementById('profileName').textContent = name;
+    document.getElementById('profileEmail').textContent = user.email || '';
+    document.getElementById('userId').textContent = user.id || '—';
+    const created = user.created_at ? new Date(user.created_at) : null;
+    document.getElementById('memberSince').textContent = created ? created.toLocaleDateString('en-GB', { year: 'numeric', month: 'long', day: 'numeric' }) : '—';
+    document.getElementById('lastSignIn').textContent = user.last_sign_in_at ? new Date(user.last_sign_in_at).toLocaleString('en-GB') : 'Just now';
+
+    // Subscription panel
+    const tierBadge = document.getElementById('tierBadge');
+    const tierLabels = { free: 'FREE', trader: 'TRADER', professional: 'PROFESSIONAL' };
+    tierBadge.textContent = tierLabels[tier] || tier.toUpperCase();
+    tierBadge.className = 'tier-badge' + (tier === 'free' ? ' free' : '');
+
+    document.getElementById('planName').textContent = { free: 'Free', trader: 'Trader', professional: 'Professional' }[tier] || tier;
+    const interval = localStorage.getItem('subscription_interval') || (tier === 'free' ? '—' : 'Monthly');
+    document.getElementById('planInterval').textContent = interval === '—' ? '—' : interval.charAt(0).toUpperCase() + interval.slice(1);
+
+    const status = localStorage.getItem('subscription_status') || (tier === 'free' ? 'free' : 'active');
+    const subEl = document.getElementById('subStatus');
+    if (status === 'active') {
+      subEl.className = 'sub-status active';
+      subEl.textContent = 'Your subscription is active. Thank you for supporting NSE Insights.';
+    } else if (status === 'cancelled') {
+      subEl.className = 'sub-status inactive';
+      subEl.textContent = 'Your subscription is cancelled. You\'ll keep access until the end of the period.';
+    } else {
+      subEl.className = 'sub-status inactive';
+      subEl.textContent = 'You\'re on the free tier. Upgrade any time to unlock historical data and exports.';
+    }
+
+    // Next charge (30 days from now for demo)
+    const nextCharge = (tier !== 'free' && status === 'active')
+      ? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toLocaleDateString('en-GB', { year: 'numeric', month: 'short', day: 'numeric' })
+      : '—';
+    document.getElementById('nextCharge').textContent = nextCharge;
+
+    const method = localStorage.getItem('subscription_plan') ? (localStorage.getItem('last_method') || 'Card on file') : '—';
+    document.getElementById('paymentMethod').textContent = method;
+
+    // Buttons
+    document.getElementById('upgradeBtn').style.display = tier === 'professional' ? 'none' : '';
+    document.getElementById('upgradeBtn').textContent = tier === 'free' ? 'Upgrade' : 'Change plan';
+    document.getElementById('manageBillingBtn').style.display = tier !== 'free' ? '' : 'none';
+    document.getElementById('cancelBtn').style.display = (tier !== 'free' && status === 'active') ? '' : 'none';
+
+    // Features list
+    const features = {
+      free: ['20 top NSE companies', '2 years of history', 'Daily market summary', 'Sector overview'],
+      trader: ['60 companies', '5 years of history', 'CSV & Excel exports', 'Valuation estimates (P/E, DCF)', '5-minute chart refresh'],
+      professional: ['All 72 NSE companies', '12 years of history', 'Advanced metrics & watchlists', 'Admin + data review console', '1-minute chart refresh', 'Priority support'],
+    };
+    const ul = document.getElementById('tierFeatures');
+    ul.innerHTML = '';
+    (features[tier] || features.free).forEach(f => {
+      const li = document.createElement('li'); li.textContent = f; ul.appendChild(li);
+    });
+  }
+
+  loadAccount();
+</script>
+  <script src="feedback.js?v=1"></script>
+  <script>
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+  </script>
+</body>
+</html>

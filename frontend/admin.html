@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#1e88ff" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
+  <link rel="apple-touch-icon" href="icons/icon-192.png" />
+
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#050505" />
+  <title>NSE Insights — Admin Review</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ═══════════════════════════════════════════════════════════ */
+    /* ADMIN PDF VIEWER — Three-Panel Layout                       */
+    /* ═══════════════════════════════════════════════════════════ */
+
+    .admin-page {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      padding-top: 60px; /* Account for fixed nav */
+    }
+
+    /* ── LEFT SIDEBAR (Always visible) ──────────────────────── */
+    .admin-sidebar {
+      position: fixed;
+      left: 0;
+      top: 60px;
+      bottom: 0;
+      width: 280px;
+      background: var(--bg-card);
+      border-right: 1px solid var(--border-dim);
+      display: flex;
+      flex-direction: column;
+      z-index: 100;
+    }
+
+    .sidebar-header {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-dim);
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .company-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.5rem;
+    }
+
+    .company-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 0.9rem;
+      margin-bottom: 0.3rem;
+      background: var(--bg-base);
+      border: 1px solid transparent;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      font-size: 0.85rem;
+    }
+
+    .company-item:hover {
+      border-color: var(--accent-primary);
+      background: var(--bg-card);
+    }
+
+    .company-item.selected {
+      border-color: var(--accent-primary);
+      background: var(--bg-card);
+    }
+
+    .co-status {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .co-status.complete { color: var(--up); }
+    .co-status.partial { color: #ffb300; }
+    .co-status.missing { color: var(--down); }
+
+    .co-ticker {
+      font-weight: 700;
+      color: var(--text-primary);
+      font-family: var(--mono);
+      letter-spacing: 0.05em;
+    }
+
+    .co-name {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* ── CENTER PANEL (PDF Viewer) ───────────────────────────── */
+    .pdf-viewer {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      margin-left: 280px;
+      background: var(--bg-base);
+    }
+
+    /* PDF Toolbar */
+    .pdf-toolbar {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg-card);
+      border-bottom: 1px solid var(--border-dim);
+      flex-wrap: wrap;
+      min-height: 50px;
+    }
+
+    .pdf-toolbar-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .pdf-toolbar button {
+      padding: 0.5rem 0.9rem;
+      background: var(--bg-base);
+      border: 1px solid var(--border-dim);
+      color: var(--text-primary);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .pdf-toolbar button:hover {
+      border-color: var(--accent-primary);
+      background: var(--bg-card);
+    }
+
+    .pdf-toolbar button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .page-counter {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-family: var(--mono);
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .pdf-breadcrumb {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-left: auto;
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
+
+    .pdf-breadcrumb span {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    /* PDF Container */
+    .pdf-container {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #000;
+    }
+
+    .pdf-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: white;
+      display: block;
+    }
+
+    .pdf-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .pdf-empty-icon {
+      font-size: 3rem;
+      opacity: 0.3;
+    }
+
+    .pdf-empty-text {
+      font-size: 0.9rem;
+    }
+
+    /* ── RIGHT PANEL (Metadata) ──────────────────────────────── */
+    .metadata-panel {
+      width: 320px;
+      background: var(--bg-card);
+      border-left: 1px solid var(--border-dim);
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      padding: 1rem;
+    }
+
+    .metadata-section {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-dim);
+    }
+
+    .metadata-section:last-child {
+      border-bottom: none;
+    }
+
+    .metadata-title {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+      margin-bottom: 0.75rem;
+    }
+
+    .metadata-item {
+      margin-bottom: 0.75rem;
+    }
+
+    .metadata-label {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 0.25rem;
+    }
+
+    .metadata-value {
+      font-size: 0.9rem;
+      color: var(--text-primary);
+      font-family: var(--mono);
+      word-break: break-word;
+    }
+
+    .company-info-badge {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      background: var(--bg-base);
+      border: 1px solid var(--border-dim);
+      border-radius: 4px;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      margin-top: 0.3rem;
+    }
+
+    /* ═══════════════════════════════════════════════════════════ */
+    /* RESPONSIVE DESIGN ─ Mobile/Tablet Adjustments              */
+    /* ═══════════════════════════════════════════════════════════ */
+
+    @media (max-width: 1200px) {
+      .metadata-panel {
+        display: none;
+      }
+      .pdf-viewer {
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .admin-page {
+        padding-top: 60px;
+      }
+
+      .admin-sidebar {
+        width: 240px;
+      }
+
+      .pdf-viewer {
+        margin-left: 240px;
+      }
+
+      .pdf-toolbar {
+        flex-direction: column;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        min-height: auto;
+      }
+
+      .pdf-toolbar-group {
+        width: 100%;
+        flex-wrap: wrap;
+      }
+
+      .pdf-breadcrumb {
+        width: 100%;
+        margin: 0;
+        flex-direction: column;
+        gap: 0.3rem;
+      }
+
+      .page-counter {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .admin-sidebar {
+        width: 180px;
+      }
+
+      .pdf-viewer {
+        margin-left: 180px;
+      }
+
+      .pdf-toolbar button {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.75rem;
+      }
+
+      .metadata-panel {
+        width: 100%;
+        max-height: 200px;
+      }
+    }
+  </style>
+</head>
+<body class="light">
+
+  <!-- Top Navigation -->
+  <nav class="topnav">
+    <div class="topnav-left">
+      <a href="landing.html" class="logo-link">
+        <span class="logo-dot"></span>
+        <span class="logo-text">NSE Insights</span>
+      </a>
+    </div>
+    <div style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 2rem;">
+      <span style="font-size: 0.85rem; color: var(--text-muted); font-weight: 600;">Admin Review Panel</span>
+    </div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <button class="theme-toggle" id="theme-toggle" title="Toggle light/dark mode" onclick="toggleTheme()" style="margin-right: 0.5rem;">☀️</button>
+      <a href="index.html" style="color: var(--accent-primary); text-decoration: none; font-size: 0.9rem;">← Back to Dashboard</a>
+    </div>
+  </nav>
+
+  <!-- Main Admin Layout -->
+  <div class="admin-page">
+    <!-- Left Sidebar -->
+    <div class="admin-sidebar" id="admin-sidebar">
+      <div class="sidebar-header">Companies</div>
+      <div class="company-list" id="company-list">
+        <!-- Populated by JavaScript -->
+      </div>
+    </div>
+
+    <!-- Center PDF Viewer -->
+    <div class="pdf-viewer" id="pdf-viewer">
+      <div class="pdf-toolbar">
+        <div class="pdf-toolbar-group">
+          <button id="pdf-prev-btn" onclick="prevPDFPage()" title="Previous page">← Prev</button>
+          <span class="page-counter" id="pdf-page-counter">—</span>
+          <button id="pdf-next-btn" onclick="nextPDFPage()" title="Next page">Next →</button>
+        </div>
+        <div class="pdf-toolbar-group" style="margin-left: auto;">
+          <button onclick="zoomPDF(1.2)" title="Zoom in">🔍+</button>
+          <button onclick="zoomPDF(0.8)" title="Zoom out">🔍−</button>
+          <button onclick="openPDFTab()" title="Open in new tab" style="background:var(--accent-primary);color:#fff;border-color:var(--accent-primary);">↗ Open</button>
+          <button onclick="downloadPDF()" title="Download PDF">⬇ Download</button>
+        </div>
+        <div class="pdf-breadcrumb" id="pdf-breadcrumb">
+          <span>Select a company to view documents</span>
+        </div>
+      </div>
+
+      <div class="pdf-container" id="pdf-container">
+        <div class="pdf-empty">
+          <div class="pdf-empty-icon">📄</div>
+          <div class="pdf-empty-text">
+            <p>Select a company from the left panel</p>
+            <p style="font-size: 0.8rem; margin-top: 0.5rem;">Click a company to view its financial documents</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Metadata Panel (Hidden on mobile) -->
+    <div class="metadata-panel" id="metadata-panel">
+      <div class="metadata-section">
+        <div class="metadata-title">Company Info</div>
+        <div class="metadata-item">
+          <div class="metadata-label">Name</div>
+          <div class="metadata-value" id="meta-company-name">—</div>
+        </div>
+        <div class="metadata-item">
+          <div class="metadata-label">Ticker</div>
+          <div class="metadata-value" id="meta-company-ticker">—</div>
+        </div>
+        <div class="metadata-item">
+          <div class="metadata-label">Sector</div>
+          <div class="metadata-value" id="meta-company-sector">—</div>
+        </div>
+      </div>
+
+      <div class="metadata-section">
+        <div class="metadata-title">Document Info</div>
+        <div class="metadata-item">
+          <div class="metadata-label">Report Type</div>
+          <div class="metadata-value" id="meta-doc-type">—</div>
+        </div>
+        <div class="metadata-item">
+          <div class="metadata-label">Period</div>
+          <div class="metadata-value" id="meta-doc-period">—</div>
+        </div>
+        <div class="metadata-item">
+          <div class="metadata-label">Total Pages</div>
+          <div class="metadata-value" id="meta-doc-pages">—</div>
+        </div>
+      </div>
+
+      <div class="metadata-section" id="meta-financials-section">
+        <div class="metadata-title">Key Figures (Extract)</div>
+        <div id="meta-financials-content">
+          <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">Loading…</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PDF.js — canvas-based renderer, works in all iframe contexts -->
+  <script src="config.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <!-- Scripts -->
+  <script src="data.js?v=8"></script>
+  <script src="nse_tickers.js"></script>
+  <script>
+    // ═══════════════════════════════════════════════════════════
+    // ADMIN PDF VIEWER — JavaScript Logic
+    // ═══════════════════════════════════════════════════════════
+
+    // PDF.js setup
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+    let currentCompany = null;
+    let currentPDFUrl = null;
+    let pdfCurrentPage = 1;
+    let pdfTotalPages = 1;
+    let _pdfDoc = null;
+    let _pdfScale = 1.5;
+    let _renderTask = null;
+
+    // ── Company List Population ───────────────────────────────
+    function populateCompanyList() {
+      const list = document.getElementById('company-list');
+      if (!list || !NSE_COMPANIES) return;
+
+      const sortedCompanies = Object.values(NSE_COMPANIES).sort((a, b) =>
+        (a.name || '').localeCompare(b.name || '')
+      );
+
+      list.innerHTML = sortedCompanies.map(company => `
+          <div class="company-item" onclick="selectCompany('${company.ticker}')">
+            <span class="co-ticker">${company.ticker}</span>
+            <span class="co-name">${company.name || ''}</span>
+          </div>
+        `).join('');
+    }
+
+    // ── Company Selection ────────────────────────────────────
+    function selectCompany(ticker) {
+      currentCompany = NSE_COMPANIES[ticker];
+      if (!currentCompany) return;
+
+      // Update metadata panel
+      document.getElementById('meta-company-name').textContent = currentCompany.name || '—';
+      document.getElementById('meta-company-ticker').textContent = ticker;
+      document.getElementById('meta-company-sector').textContent = currentCompany.sector || '—';
+
+      // Update breadcrumb
+      document.getElementById('pdf-breadcrumb').innerHTML = `
+        <span>${currentCompany.name}</span>
+        <span>›</span>
+        <span>Annual Report 2024</span>
+      `;
+
+      // Load PDF (for now using iframe fallback)
+      loadPDF(ticker);
+
+      // Update selected state in list
+      document.querySelectorAll('.company-item').forEach(el => {
+        el.classList.remove('selected');
+        if (el.textContent.includes(ticker)) {
+          el.classList.add('selected');
+        }
+      });
+    }
+
+    // ── PDF Loading ──────────────────────────────────────────
+    // Fetches directory listing from Python http.server, parses PDF links,
+    // shows a file picker, and loads the selected file.
+    let _docFiles = []; // current company's document list
+
+    const R2_BASE = 'https://pub-392c9faa02aa450cb27f645c16e32feb.r2.dev';
+    const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+
+    function loadPDF(ticker) {
+      const company = NSE_COMPANIES[ticker];
+      if (!company) { showNoPDFMessage(); return; }
+
+      const container = document.getElementById('pdf-container');
+      container.innerHTML = `<div class="pdf-empty"><div class="pdf-empty-icon">⏳</div><div class="pdf-empty-text"><p>Scanning documents folder…</p></div></div>`;
+
+      if (IS_LOCAL) {
+        // localhost: use Python HTTP server directory listing
+        const dirUrl = `data/companies/${ticker}/documents/`;
+        fetch(dirUrl)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const links = Array.from(doc.querySelectorAll('a[href$=".pdf"]'));
+            const files = links
+              .map(a => decodeURIComponent(a.getAttribute('href')))
+              .filter(f => f && !f.startsWith('/') && f.endsWith('.pdf'))
+              .sort((a, b) => b.localeCompare(a));
+            if (files.length === 0) { showNoPDFMessage(); return; }
+            _docFiles = files;
+            openPDF(dirUrl + files[0], files[0], extractYear(files[0]), company);
+            renderFilePicker(files, dirUrl, company);
+          })
+          .catch(() => showNoPDFMessage());
+      } else {
+        // Production: fetch manifest.json from R2
+        const manifestUrl = `${R2_BASE}/companies/${ticker}/manifest.json`;
+        const dirUrl = `${R2_BASE}/companies/${ticker}/documents/`;
+        fetch(manifestUrl)
+          .then(res => {
+            if (!res.ok) throw new Error('no manifest');
+            return res.json();
+          })
+          .then(files => {
+            if (!files || files.length === 0) { showNoPDFMessage(); return; }
+            const sorted = [...files].sort((a, b) => b.localeCompare(a));
+            _docFiles = sorted;
+            openPDF(dirUrl + sorted[0], sorted[0], extractYear(sorted[0]), company);
+            renderFilePicker(sorted, dirUrl, company);
+          })
+          .catch(() => showNoPDFMessage());
+      }
+    }
+
+    function extractYear(filename) {
+      const m = filename.match(/(\d{4})/g);
+      if (!m) return '—';
+      // Return the last 4-digit year found (usually at end of filename)
+      return m[m.length - 1];
+    }
+
+    function openPDF(url, filename, year, company) {
+      currentPDFUrl = url;
+      pdfCurrentPage = 1;
+      _pdfDoc = null;
+
+      const container = document.getElementById('pdf-container');
+      container.innerHTML = `
+        <div style="display:flex;flex-direction:column;align-items:center;width:100%;padding:1rem;box-sizing:border-box;">
+          <canvas id="pdf-canvas" style="max-width:100%;box-shadow:0 2px 16px rgba(0,0,0,0.3);"></canvas>
+        </div>`;
+
+      document.getElementById('pdf-page-counter').textContent = 'Loading…';
+      document.getElementById('meta-doc-pages').textContent = '—';
+      document.getElementById('meta-doc-type').textContent = 'Annual Report';
+      document.getElementById('meta-doc-period').textContent = year;
+      document.getElementById('pdf-breadcrumb').innerHTML =
+        `<span>${company.name}</span><span>›</span><span>${filename}</span>`;
+
+      pdfjsLib.getDocument(url).promise.then(pdf => {
+        _pdfDoc = pdf;
+        pdfTotalPages = pdf.numPages;
+        document.getElementById('meta-doc-pages').textContent = pdf.numPages;
+        renderPage(1);
+      }).catch(err => {
+        container.innerHTML = `
+          <div class="pdf-empty">
+            <div class="pdf-empty-icon">⚠️</div>
+            <div class="pdf-empty-text">
+              <p>Could not load PDF</p>
+              <p style="font-size:0.8rem;margin-top:0.5rem;">${err.message}</p>
+              <button onclick="openPDFTab()" style="margin-top:1rem;padding:0.6rem 1.2rem;background:var(--accent-primary);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:0.9rem;font-weight:600;">↗ Open in new tab</button>
+            </div>
+          </div>`;
+      });
+    }
+
+    function renderPage(num) {
+      if (!_pdfDoc) return;
+      pdfCurrentPage = num;
+      document.getElementById('pdf-page-counter').textContent = `Page ${num} / ${pdfTotalPages}`;
+
+      _pdfDoc.getPage(num).then(page => {
+        const canvas = document.getElementById('pdf-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const viewport = page.getViewport({ scale: _pdfScale });
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        if (_renderTask) _renderTask.cancel();
+        _renderTask = page.render({ canvasContext: ctx, viewport });
+        _renderTask.promise.catch(() => {}); // ignore cancel errors
+      });
+    }
+
+    function openPDFTab() {
+      if (currentPDFUrl) window.open(currentPDFUrl, '_blank');
+    }
+
+    function renderFilePicker(files, dirUrl, company) {
+      // Inject a compact file-select dropdown into the toolbar
+      let picker = document.getElementById('pdf-file-picker');
+      if (!picker) {
+        const toolbar = document.querySelector('.pdf-toolbar-group');
+        picker = document.createElement('select');
+        picker.id = 'pdf-file-picker';
+        picker.style.cssText = 'padding:0.4rem 0.6rem;background:var(--bg-base);border:1px solid var(--border-dim);color:var(--text-primary);border-radius:6px;font-size:0.8rem;max-width:320px;cursor:pointer;';
+        toolbar.appendChild(picker);
+      }
+      // Always refresh the handler so it captures the current company's dirUrl
+      picker.onchange = function() {
+        const f = this.value;
+        openPDF(dirUrl + f, f, extractYear(f), company);
+      };
+      picker.innerHTML = files.map(f =>
+        `<option value="${f}">${f.replace(/_/g,' ').replace('.pdf','')}</option>`
+      ).join('');
+      picker.value = files[0];
+    }
+
+    function showNoPDFMessage() {
+      const container = document.getElementById('pdf-container');
+      container.innerHTML = `
+        <div class="pdf-empty">
+          <div class="pdf-empty-icon">📄</div>
+          <div class="pdf-empty-text">
+            <p>No PDF available for ${currentCompany.name}</p>
+            <p style="font-size: 0.8rem; margin-top: 0.5rem;">Please check back soon</p>
+          </div>
+        </div>
+      `;
+      document.getElementById('pdf-page-counter').textContent = '—';
+    }
+
+    // ── PDF Navigation ──────────────────────────────────────
+    function nextPDFPage() {
+      if (_pdfDoc && pdfCurrentPage < pdfTotalPages) renderPage(pdfCurrentPage + 1);
+    }
+
+    function prevPDFPage() {
+      if (_pdfDoc && pdfCurrentPage > 1) renderPage(pdfCurrentPage - 1);
+    }
+
+    function zoomPDF(factor) {
+      if (!_pdfDoc) return;
+      _pdfScale = Math.min(Math.max(_pdfScale * factor, 0.5), 4.0);
+      renderPage(pdfCurrentPage);
+    }
+
+    function downloadPDF() {
+      if (!currentPDFUrl) return;
+      const a = document.createElement('a');
+      a.href = currentPDFUrl;
+      a.download = `${currentCompany.ticker}_Annual_Report.pdf`;
+      a.click();
+    }
+
+    // ── Theme Toggle ────────────────────────────────────────
+    function toggleTheme() {
+      const isLight = document.body.classList.toggle('light');
+      const btn = document.getElementById('theme-toggle');
+      if (btn) btn.textContent = isLight ? '🌙' : '☀️';
+      try { localStorage.setItem('nse-theme', isLight ? 'light' : 'dark'); } catch(e) {}
+    }
+
+    function initTheme() {
+      let saved = null;
+      try { saved = localStorage.getItem('nse-theme'); } catch(e) {}
+      if (saved === 'light') {
+        document.body.classList.add('light');
+        const btn = document.getElementById('theme-toggle');
+        if (btn) btn.textContent = '🌙';
+      }
+    }
+
+    // ── Initialize on page load ──────────────────────────────
+    document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      populateCompanyList();
+    });
+  </script>
+  <script>
+    if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+  </script>
+</body>
+</html>
