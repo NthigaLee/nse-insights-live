@@ -1,11 +1,26 @@
 # Cloudflare Pages — redirects + rewrites.
+# 200 = internal rewrite (URL stays the same, different file served)
+# 301/308 = permanent redirect (browser navigates)
 # https://developers.cloudflare.com/pages/configuration/redirects/
 
 # Bare root → landing page (the marketing site)
 /             /landing.html         200
 
+# Clean URLs — serve .html files at extensionless paths (internal rewrite)
+/index        /index.html           200
+/dashboard    /index.html           200
+/login        /login.html           200
+/signup       /login.html           200
+/signin       /login.html           200
+/account      /account.html         200
+/pricing      /pricing.html         200
+/terms        /terms.html           200
+/privacy      /privacy.html         200
+/admin        /admin.html           200
+/admin/financials   /admin_financials.html  200
+/admin/review       /admin_review.html      200
+/checkout/success   /checkout-success.html  200
+/checkout/cancel    /checkout-cancel.html   200
+
 # Old/short paths
 /home         /landing.html         301
-/dashboard    /index.html           301
-/signup       /login.html           301
-/signin       /login.html           301

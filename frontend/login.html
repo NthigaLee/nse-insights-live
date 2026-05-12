@@ -440,7 +440,7 @@
       btn.disabled = false; btn.textContent = 'Sign in';
       if (!res.ok) return showAlert('error', res.error || 'Could not sign in.');
       showAlert('success', 'Signed in. Redirecting…');
-      setTimeout(() => window.location.href = 'index.html', 700);
+      setTimeout(() => window.location.href = '/dashboard', 700);
     }
 
     async function handleSignup(e) {
@@ -458,7 +458,7 @@
       if (!res.ok) return showAlert('error', res.error || 'Could not create account.');
       if (res.demo) {
         showAlert('success', 'Demo account created. Redirecting…');
-        setTimeout(() => window.location.href = 'index.html', 700);
+        setTimeout(() => window.location.href = '/dashboard', 700);
       } else {
         showAlert('success', 'Account created. Check your email to verify, then sign in.');
         setTimeout(() => switchTab('login'), 1200);

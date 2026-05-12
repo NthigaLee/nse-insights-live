@@ -21,9 +21,31 @@ let _supabase = null;
 async function loadSupabase() {
   if (DEMO_MODE) return null;
   if (_supabase) return _supabase;
-  // Dynamic ESM import so demo-mode pages don't pay for it.
-  const mod = await import('https://esm.sh/@supabase/supabase-js@2.45.4');
-  _supabase = mod.createClient(SUPABASE_URL, SUPABASE_ANON, {
+
+  // Load Supabase client lib from official CDN (skypack-style ESM).
+  // Try jsdelivr first; fall back to unpkg and then esm.sh.
+  const SOURCES = [
+    'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/+esm',
+    'https://unpkg.com/@supabase/supabase-js@2.45.4/dist/module/index.js',
+    'https://esm.sh/@supabase/supabase-js@2.45.4',
+  ];
+  let mod = null, lastErr = null;
+  for (const src of SOURCES) {
+    try {
+      mod = await import(src);
+      if (mod && (mod.createClient || (mod.default && mod.default.createClient))) {
+        break;
+      }
+    } catch (e) {
+      lastErr = e;
+      console.warn('Supabase client load failed from', src, '— trying next', e?.message);
+    }
+  }
+  if (!mod) {
+    throw new Error('Could not load Supabase client from any CDN: ' + (lastErr?.message || 'unknown'));
+  }
+  const createClient = mod.createClient || mod.default?.createClient;
+  _supabase = createClient(SUPABASE_URL, SUPABASE_ANON, {
     auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
   });
   return _supabase;
