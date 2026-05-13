@@ -1,9 +1,9 @@
 // NSE Insights — service worker
 // Versioned cache; update CACHE_VERSION on each deploy to bust caches.
-const CACHE_VERSION = 'nse-insights-v7';
+const CACHE_VERSION = 'nse-insights-v8';
 const STATIC_ASSETS = [
   '/landing.html',
-  '/index.html',
+  '/dashboard.html',
   '/pricing.html',
   '/login.html',
   '/account.html',

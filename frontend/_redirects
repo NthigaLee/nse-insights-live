@@ -1,19 +1,16 @@
 # Cloudflare Pages — redirects + rewrites.
-# Pages auto-redirects /index → / (treats index.html as the root file).
-# We dodge this by routing the dashboard via /dashboard instead.
+# We renamed index.html → dashboard.html to avoid Pages' auto-redirect /index → /.
+# Root still serves landing via the rule below.
 
 # Root → marketing landing (200 = internal rewrite, URL stays /)
 /                   /landing.html             200
-
-# Dashboard at /dashboard (proxy rewrite, URL stays /dashboard)
-/dashboard          /index.html               200
 
 # Short aliases
 /home               /                         301
 /signup             /login                    301
 /signin             /login                    301
 
-# Multi-word paths Pages won't auto-resolve
+# Multi-word paths
 /checkout/success   /checkout-success.html    200
 /checkout/cancel    /checkout-cancel.html     200
 /admin/financials   /admin_financials.html    200

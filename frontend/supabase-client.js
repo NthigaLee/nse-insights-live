@@ -91,7 +91,7 @@ const AuthAPI = {
       const user = { email: 'demo@nseinsights.co.ke', firstName: 'Demo', tier: 'free' };
       localStorage.setItem('nse_demo_user', JSON.stringify(user));
       localStorage.setItem('userTier', 'free');
-      window.location.href = 'index.html';
+      window.location.href = '/dashboard';
       return { ok: true, demo: true };
     }
     const sb = await loadSupabase();
