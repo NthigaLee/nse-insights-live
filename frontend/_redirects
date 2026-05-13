@@ -1,16 +1,17 @@
 # Cloudflare Pages — redirects + rewrites.
-# Pages automatically strips .html extensions (e.g. /login.html → /login)
-# and serves the content of foo.html at /foo. So we only need rules for paths
-# that Pages can't infer (like / → landing, or /signup → /login alias).
+# Pages auto-redirects /index → / (treats index.html as the root file).
+# We dodge this by routing the dashboard via /dashboard instead.
 
 # Root → marketing landing (200 = internal rewrite, URL stays /)
 /                   /landing.html             200
 
-# Short aliases (301 = browser navigates)
+# Dashboard at /dashboard (proxy rewrite, URL stays /dashboard)
+/dashboard          /index.html               200
+
+# Short aliases
 /home               /                         301
 /signup             /login                    301
 /signin             /login                    301
-/dashboard          /index                    301
 
 # Multi-word paths Pages won't auto-resolve
 /checkout/success   /checkout-success.html    200

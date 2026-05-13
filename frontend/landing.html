@@ -363,8 +363,8 @@
       </a>
       <div class="nav-links" aria-label="Primary">
         <a href="landing.html" class="active">Home</a>
-        <a href="index.html">Dashboard</a>
-        <a href="index.html#sectors">Sectors</a>
+        <a href="/dashboard">Dashboard</a>
+        <a href="/dashboard#sectors">Sectors</a>
         <a href="pricing.html">Pricing</a>
       </div>
       <div class="nav-actions">
@@ -381,8 +381,8 @@
   <div class="nav-drawer" id="nav-drawer" aria-hidden="true">
     <div class="panel">
       <a href="landing.html">Home</a>
-      <a href="index.html">Dashboard</a>
-      <a href="index.html#sectors">Sectors</a>
+      <a href="/dashboard">Dashboard</a>
+      <a href="/dashboard#sectors">Sectors</a>
       <a href="pricing.html">Pricing</a>
       <a href="login.html">Sign In</a>
       <a href="login.html#signup">Get started</a>
@@ -403,7 +403,7 @@
         <h1 class="reveal">All NSE Insights <span class="grad">in the palm</span> of your hand</h1>
         <p class="lede reveal">Track market trends, dive into sector performance, and explore company financials — built for first-time investors and seasoned analysts alike.</p>
         <div class="hero-cta reveal">
-          <a class="ghost-button pill" href="index.html#sectors" style="padding: 0.65rem 1.4rem;">Browse Sectors</a>
+          <a class="ghost-button pill" href="/dashboard#sectors" style="padding: 0.65rem 1.4rem;">Browse Sectors</a>
           <a class="metallic-button pill" href="login.html#signup" style="padding: 0.7rem 1.5rem; font-weight: 600;">Get Started</a>
         </div>
 
@@ -565,7 +565,7 @@
           <p class="eyebrow">Top Performers</p>
           <h2>Leaders driving the index</h2>
         </div>
-        <a href="index.html" class="ghost-button pill">View dashboard →</a>
+        <a href="/dashboard" class="ghost-button pill">View dashboard →</a>
       </div>
       <div class="grid-3">
         <div class="perf-card reveal">
@@ -608,30 +608,30 @@
           <p class="eyebrow">Sectors</p>
           <h2>Performance by industry</h2>
         </div>
-        <a href="index.html#sectors" class="ghost-button pill">All sectors →</a>
+        <a href="/dashboard#sectors" class="ghost-button pill">All sectors →</a>
       </div>
       <div class="grid-3">
-        <a class="sector-card reveal" href="index.html#sector=Banking">
+        <a class="sector-card reveal" href="/dashboard#sector=Banking">
           <div><div class="name">Banking</div><div class="meta">11 listings · KES 220B PAT · 65% of total</div></div>
           <span class="arrow">→</span>
         </a>
-        <a class="sector-card reveal" href="index.html#sector=Telecoms+%26+Technology">
+        <a class="sector-card reveal" href="/dashboard#sector=Telecoms+%26+Technology">
           <div><div class="name">Telecoms &amp; Technology</div><div class="meta">3 listings · KES 70B PAT · 21%</div></div>
           <span class="arrow">→</span>
         </a>
-        <a class="sector-card reveal" href="index.html#sector=Energy+%26+Utilities">
+        <a class="sector-card reveal" href="/dashboard#sector=Energy+%26+Utilities">
           <div><div class="name">Energy &amp; Utilities</div><div class="meta">3 listings · KES 24B PAT · 7%</div></div>
           <span class="arrow">→</span>
         </a>
-        <a class="sector-card reveal" href="index.html#sector=Consumer+Goods">
+        <a class="sector-card reveal" href="/dashboard#sector=Consumer+Goods">
           <div><div class="name">Consumer Goods</div><div class="meta">7 listings · KES 19B PAT · 5%</div></div>
           <span class="arrow">→</span>
         </a>
-        <a class="sector-card reveal" href="index.html#sector=Insurance">
+        <a class="sector-card reveal" href="/dashboard#sector=Insurance">
           <div><div class="name">Insurance</div><div class="meta">5 listings · KES 6B PAT · 2%</div></div>
           <span class="arrow">→</span>
         </a>
-        <a class="sector-card reveal" href="index.html#sector=Manufacturing">
+        <a class="sector-card reveal" href="/dashboard#sector=Manufacturing">
           <div><div class="name">Manufacturing</div><div class="meta">5 listings · diverse exposure</div></div>
           <span class="arrow">→</span>
         </a>
@@ -657,7 +657,7 @@
       <span style="font-weight:600;font-size:0.92rem;">NSE Insights</span>
     </div>
     <div class="links">
-      <a href="index.html">Dashboard</a>
+      <a href="/dashboard">Dashboard</a>
       <a href="pricing.html">Pricing</a>
       <a href="privacy.html">Privacy</a>
       <a href="terms.html">Terms</a>
@@ -688,7 +688,7 @@
       search.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
           const q = encodeURIComponent(search.value.trim());
-          if (q) window.location.href = `index.html?search=${q}`;
+          if (q) window.location.href = `/dashboard?search=${q}`;
         }
       });
     }
