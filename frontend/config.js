@@ -11,7 +11,7 @@ window.NSE_CONFIG = {
   // FastAPI payments backend (fill in once Render is deployed)
   // Will be: https://api.nseinsights.com (after custom domain)
   // Or:      https://nse-insights-api.onrender.com (initial Render URL)
-  PAYMENTS_API:      "",
+  PAYMENTS_API:      "https://api.nseinsights.com",
 
   // Where the burger-menu Feedback widget delivers messages (mailto fallback)
   FEEDBACK_EMAIL:    "feedback@nseinsights.com",
