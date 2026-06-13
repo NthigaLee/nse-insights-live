@@ -1382,12 +1382,37 @@ function statsCarouselGoTo(idx) {
   document.querySelectorAll('.stats-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
 }
 
+// ---- Tier gate helpers ----
+function _applyTierToRecords(records) {
+  if (!window.tierAccess || tierAccess.isPaid()) return records;
+  return tierAccess.filterStock(records);
+}
+function _showTierBanner() {
+  if (!window.tierAccess) return;
+  const msg = tierAccess.lockMessage();
+  const existing = document.getElementById('tier-lock-banner');
+  if (!msg) { if (existing) existing.remove(); return; }
+  if (existing) return;
+  const el = document.createElement('div');
+  el.id = 'tier-lock-banner';
+  el.style.cssText = 'margin:1rem 0;padding:.65rem 1rem;background:rgba(30,136,255,.1);border:1px solid rgba(30,136,255,.25);border-radius:8px;font-size:.82rem;color:#4ba3ff;display:flex;align-items:center;justify-content:space-between;gap:1rem;';
+  el.innerHTML = `<span>${msg}</span><a href="pricing.html" style="font-weight:700;color:#1e88ff;white-space:nowrap;">Upgrade →</a>`;
+  const anchor = document.getElementById('charts-section') || document.getElementById('dashboard');
+  if (anchor) anchor.prepend(el);
+}
+window.applyTierFilter = function(ta) {
+  if (_currentCompany) { renderCharts(_currentCompany, _currentPeriod); _showTierBanner(); }
+};
+
 // ---- Render Charts ----
 function renderCharts(co, period, template) {
   template = template || getTemplate(co.sector);
   period = period || 'annual';
-  const hasQ = co.quarters && co.quarters.length > 0;
-  let dp = (period === 'quarterly' && hasQ) ? [...co.quarters] : [...(co.annuals || [])];
+  const filtAnn = _applyTierToRecords(co.annuals || []);
+  const filtQ   = _applyTierToRecords(co.quarters || []);
+  const hasQ = filtQ.length > 0;
+  let dp = (period === 'quarterly' && hasQ) ? [...filtQ] : [...filtAnn];
+  if (window.tierAccess && !tierAccess.isPaid() && dp.length < (co.annuals||[]).length) _showTierBanner();
   dp.sort((a, b) => a.year !== b.year ? a.year - b.year : (a.period || '').localeCompare(b.period || ''));
 
   const labels = dp.map(d => d.period || d.year);

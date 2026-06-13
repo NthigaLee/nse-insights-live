@@ -11,6 +11,28 @@
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
 
 <title>NSE Insights — Admin Review</title>
+<script src="config.js"></script>
+<script src="supabase-client.js"></script>
+<script src="tier-access.js"></script>
+<script>
+  // Require paid tier to access admin review
+  (async () => {
+    if (!window.AuthAPI) return;
+    try {
+      const user = await window.AuthAPI.getUser();
+      if (!user && !window.AuthAPI.DEMO_MODE) {
+        window.location.replace('login.html?redirect=admin_review');
+        return;
+      }
+      if (user) {
+        await refreshTierFromServer();
+        if (!tierAccess.canViewAdmin()) {
+          window.location.replace('pricing.html?reason=admin_review');
+        }
+      }
+    } catch(e) {}
+  })();
+</script>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }

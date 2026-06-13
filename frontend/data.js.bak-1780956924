@@ -33,32 +33,27 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "revenue": 60000000,
-      "pat": 22900000,
-      "pbt": null,
-      "nii": null,
-      "eps": 4.22,
-      "dps": 2.05,
-      "totalAssets": 537600000,
-      "deposits": 372400000
+      "revenue": 62323309.0,
+      "pat": 20875701.0,
+      "pbt": 29719669.0,
+      "nii": 46227774.0,
+      "eps": 3.84,
+      "dps": 1.75,
+      "deposits": 367114721.0,
+      "loans": 309097555.0,
+      "totalAssets": 506476258.0,
+      "totalEquity": 85204206.0,
+      "interestIncome": 64727000,
+      "interestExpense": 18499000,
+      "loanLossProvision": 7761000,
+      "provisionToInterestIncome": 12.0,
+      "totalOpex": 23508000,
+      "costToIncomeRatio": 37.7
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "revenue": 60000000,
-        "pat": 22900000,
-        "pbt": null,
-        "nii": null,
-        "eps": 4.22,
-        "dps": 2.05,
-        "totalAssets": 537600000,
-        "deposits": 372400000
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -241,65 +236,24 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2023,
-      "period": "FY2023",
+      "year": 2020,
+      "period": "FY2020",
       "periodType": "annual",
-      "revenue": 22030000,
-      "pat": 670000,
-      "pbt": null,
-      "eps": null,
-      "dps": null
+      "revenue": 34884.0,
+      "pat": 1129.0,
+      "pbt": 1776.0
     },
     "annuals": [
-      {
-        "year": 2023,
-        "period": "FY2023",
-        "periodType": "annual",
-        "revenue": 22030000,
-        "pat": 670000,
-        "pbt": null,
-        "eps": null,
-        "dps": null
-      },
-      {
-        "year": 2022,
-        "period": "FY2022",
-        "periodType": "annual",
-        "revenue": 38990000,
-        "pat": 181000,
-        "pbt": null,
-        "eps": 0.56,
-        "dps": null
-      },
-      {
-        "year": 2021,
-        "period": "FY2021",
-        "periodType": "annual",
-        "revenue": null,
-        "pat": 1380000,
-        "pbt": null,
-        "eps": 3.58,
-        "dps": null
-      },
       {
         "year": 2020,
         "period": "FY2020",
         "periodType": "annual",
-        "revenue": 34884000.0,
-        "pat": 1129000.0,
-        "pbt": 1776000.0
+        "revenue": 34884.0,
+        "pat": 1129.0,
+        "pbt": 1776.0
       }
     ],
     "quarters": [
-      {
-        "year": 2024,
-        "period": "H1 2024",
-        "periodType": "half",
-        "revenue": null,
-        "pbt": 695000,
-        "pat": -877000,
-        "eps": null
-      },
       {
         "year": 2024,
         "period": "H1 Jun2024",
@@ -345,15 +299,15 @@ const NSE_COMPANIES = {
       "period": "FY2023",
       "periodType": "annual",
       "grossSales": 41249000.0,
-      "revenue": 25557000,
+      "revenue": 25557000.0,
       "cogs": -17632000.0,
       "grossProfit": 7925000.0,
       "ebit": 7925000.0,
-      "pbt": 8022000,
-      "pat": 5568000,
+      "pbt": 8022000.0,
+      "pat": 5568000.0,
       "eps": 55.68,
       "dps": 50.0,
-      "totalAssets": 18250000,
+      "totalAssets": 24050000.0,
       "totalEquity": 16250000.0,
       "totalLiabilities": 7800000.0,
       "ppe": 11807000.0,
@@ -367,15 +321,15 @@ const NSE_COMPANIES = {
         "period": "FY2023",
         "periodType": "annual",
         "grossSales": 41249000.0,
-        "revenue": 25557000,
+        "revenue": 25557000.0,
         "cogs": -17632000.0,
         "grossProfit": 7925000.0,
         "ebit": 7925000.0,
-        "pbt": 8022000,
-        "pat": 5568000,
+        "pbt": 8022000.0,
+        "pat": 5568000.0,
         "eps": 55.68,
         "dps": 50.0,
-        "totalAssets": 18250000,
+        "totalAssets": 24050000.0,
         "totalEquity": 16250000.0,
         "totalLiabilities": 7800000.0,
         "ppe": 11807000.0,
@@ -598,7 +552,7 @@ const NSE_COMPANIES = {
         "pbt": 156271.0,
         "eps": 5.21,
         "totalAssets": 35883.0,
-        "totalEquity": null
+        "totalEquity": 1607568.0
       }
     ],
     "quarters": [
@@ -610,7 +564,7 @@ const NSE_COMPANIES = {
         "pat": 50360.0,
         "pbt": 71635.0,
         "eps": 2.58,
-        "totalAssets": null,
+        "totalAssets": 602.0,
         "totalEquity": 1743492.0
       }
     ]
@@ -840,7 +794,7 @@ const NSE_COMPANIES = {
         "revenue": 630500.0,
         "pat": 264589.0,
         "pbt": 377153.0,
-        "eps": null,
+        "eps": 262.0,
         "totalEquity": 3335544.0
       }
     ],
@@ -929,32 +883,20 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "revenue": 38500000,
-      "pat": 13720000,
-      "pbt": null,
-      "nii": 24080000,
-      "eps": null,
-      "dps": 22.35,
-      "loans": 272900000,
-      "deposits": 373700000
+      "revenue": 39743682.0,
+      "pat": 13715652.0,
+      "pbt": 18970787.0,
+      "dps": 20.74,
+      "nii": 24338174.0,
+      "eps": 34.7,
+      "totalAssets": 454834386.0,
+      "totalEquity": 75400572.0,
+      "deposits": 339011716.0
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "revenue": 38500000,
-        "pat": 13720000,
-        "pbt": null,
-        "nii": 24080000,
-        "eps": null,
-        "dps": 22.35,
-        "loans": 272900000,
-        "deposits": 373700000
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -1100,7 +1042,7 @@ const NSE_COMPANIES = {
         "year": 2020,
         "period": "H1 Jun2020",
         "periodType": "half_year",
-        "revenue": null,
+        "revenue": 2020.0,
         "pat": 2553005.0,
         "pbt": 4130700.0,
         "eps": 6.46,
@@ -1141,30 +1083,21 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "pat": 29800000,
-      "pbt": 40300000,
-      "eps": 5.04,
-      "dps": 2.5,
-      "totalAssets": 827400000,
-      "deposits": 574200000,
-      "loans": 421000000
+      "revenue": 80647429.0,
+      "pat": 25456345.0,
+      "pbt": 34780319.0,
+      "nii": 51521883.0,
+      "eps": 4.33,
+      "dps": 1.5,
+      "totalAssets": 743190144.0,
+      "totalEquity": 145380078.0,
+      "deposits": 506112147.0,
+      "loans": 373732927.0
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "pat": 29800000,
-        "pbt": 40300000,
-        "eps": 5.04,
-        "dps": 2.5,
-        "totalAssets": 827400000,
-        "deposits": 574200000,
-        "loans": 421000000
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -1431,7 +1364,7 @@ const NSE_COMPANIES = {
         "year": 2018,
         "period": "FY2018",
         "periodType": "annual",
-        "revenue": null,
+        "revenue": 2018.0,
         "pat": 183813.0,
         "pbt": 395935.0,
         "totalAssets": 5475693.0,
@@ -1490,32 +1423,15 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "revenue": 46690000,
-      "pat": 10700000,
-      "pbt": null,
-      "nii": 34880000,
-      "eps": 33.65,
-      "dps": 9.0,
-      "totalAssets": 659120000,
-      "deposits": 509140000
+      "revenue": 41400000.0,
+      "pat": 7640000.0,
+      "eps": 27.33,
+      "totalAssets": 500000000.0
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "revenue": 46690000,
-        "pat": 10700000,
-        "pbt": null,
-        "nii": 34880000,
-        "eps": 33.65,
-        "dps": 9.0,
-        "totalAssets": 659120000,
-        "deposits": 509140000
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -1620,7 +1536,7 @@ const NSE_COMPANIES = {
         "period": "H1 Jun2022",
         "periodType": "half_year",
         "pat": 23395768.0,
-        "dps": null,
+        "dps": 7718459.0,
         "totalAssets": 485040585.0,
         "totalEquity": 76606716.0
       },
@@ -1934,34 +1850,26 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "revenue": 217700000,
-      "pat": 75500000,
-      "pbt": null,
-      "nii": 126900000,
-      "eps": null,
-      "dps": null,
-      "totalAssets": 1970000000,
-      "deposits": 1460000000,
-      "loans": 882500000
+      "revenue": 193782098.0,
+      "pat": 46549519.0,
+      "pbt": 60739955.0,
+      "nii": 123769000,
+      "eps": 12.34,
+      "dps": 4.25,
+      "totalAssets": 1804624428.0,
+      "totalEquity": 246866094.0,
+      "deposits": 1399648121.0,
+      "loans": 819235956.0,
+      "interestIncome": 185344000,
+      "interestExpense": 61575000,
+      "loanLossProvision": 23261000,
+      "provisionToInterestIncome": 12.6,
+      "totalOpex": 100227000
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "revenue": 217700000,
-        "pat": 75500000,
-        "pbt": null,
-        "nii": 126900000,
-        "eps": null,
-        "dps": null,
-        "totalAssets": 1970000000,
-        "deposits": 1460000000,
-        "loans": 882500000
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -2068,20 +1976,12 @@ const NSE_COMPANIES = {
     ],
     "quarters": [
       {
-        "year": 2026,
-        "period": "Q1 2026",
-        "periodType": "quarter",
-        "pat": 19100000,
-        "totalAssets": 2040000000,
-        "deposits": 1480000000
-      },
-      {
         "year": 2025,
         "period": "Q3 2025",
         "periodType": "quarter",
         "revenue": 65849444.0,
-        "eps": null,
-        "dps": null,
+        "eps": 685.31,
+        "dps": 583.33,
         "totalAssets": 985388288.0,
         "totalEquity": 126070494.0
       },
@@ -2099,8 +1999,8 @@ const NSE_COMPANIES = {
         "period": "H1 Jun2024",
         "periodType": "half_year",
         "revenue": 44519077.0,
-        "eps": null,
-        "dps": null,
+        "eps": 519.87,
+        "dps": 483.33,
         "totalAssets": 972933445.0,
         "totalEquity": 106048896.0
       },
@@ -2123,8 +2023,8 @@ const NSE_COMPANIES = {
         "period": "H1 Jun2022",
         "periodType": "half_year",
         "revenue": 33898064.0,
-        "eps": null,
-        "dps": null,
+        "eps": 479.99,
+        "dps": 233.33,
         "totalAssets": 774729987.0,
         "totalEquity": 98702087.0
       },
@@ -2133,8 +2033,8 @@ const NSE_COMPANIES = {
         "period": "Q1 2022",
         "periodType": "quarter",
         "revenue": 16532644.0,
-        "eps": null,
-        "dps": null,
+        "eps": 238.17,
+        "dps": 233.33,
         "totalAssets": 717976633.0,
         "totalEquity": 86409081.0
       },
@@ -2157,8 +2057,8 @@ const NSE_COMPANIES = {
         "period": "Q3 2020",
         "periodType": "quarter",
         "revenue": 39980566.0,
-        "eps": null,
-        "dps": null,
+        "eps": 479.31,
+        "dps": 400.0,
         "totalAssets": 511829030.0,
         "totalEquity": 78491773.0
       },
@@ -2183,9 +2083,9 @@ const NSE_COMPANIES = {
         "revenue": 12687736.0,
         "pbt": 25856962.0,
         "eps": 167.72,
-        "dps": null,
+        "dps": 400.0,
         "totalAssets": 4935701.0,
-        "totalEquity": null
+        "totalEquity": 67538874.0
       }
     ]
   },
@@ -2347,7 +2247,7 @@ const NSE_COMPANIES = {
         "pat": 75180433.0,
         "eps": 0.58,
         "totalAssets": 2874809727.0,
-        "totalEquity": null
+        "totalEquity": 2874809728.0
       },
       {
         "year": 2020,
@@ -2357,7 +2257,7 @@ const NSE_COMPANIES = {
         "pat": 75180433.0,
         "eps": 0.25,
         "totalAssets": 2281167940.0,
-        "totalEquity": null,
+        "totalEquity": 2281167941.0,
         "ebitda": 393421662.0
       },
       {
@@ -2566,26 +2466,15 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "revenue": 6170000,
-      "pbt": 1609000,
-      "pat": 1420000,
-      "totalAssets": 82400000,
-      "deposits": 56900000
+      "revenue": 3336595.0,
+      "eps": 25.99,
+      "totalAssets": 59145971.0,
+      "totalEquity": 8301824.0
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "revenue": 6170000,
-        "pbt": 1609000,
-        "pat": 1420000,
-        "totalAssets": 82400000,
-        "deposits": 56900000
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -2739,7 +2628,7 @@ const NSE_COMPANIES = {
         "pat": 80153.0,
         "pbt": 104499.0,
         "eps": 0.3,
-        "totalAssets": null,
+        "totalAssets": -17223.0,
         "totalEquity": 2242401.0
       },
       {
@@ -2769,7 +2658,7 @@ const NSE_COMPANIES = {
         "periodType": "half_year",
         "pat": 295538.0,
         "pbt": 435245.0,
-        "eps": null,
+        "eps": 2720945.0,
         "totalEquity": 5472048.0
       },
       {
@@ -2792,8 +2681,7 @@ const NSE_COMPANIES = {
         "year": 2024,
         "period": "H1 Jun2024",
         "periodType": "half_year",
-        "totalAssets": 2070276.0,
-        "eps": -2.81
+        "totalAssets": 2070276.0
       },
       {
         "year": 2024,
@@ -2819,8 +2707,7 @@ const NSE_COMPANIES = {
         "revenue": 4319437.0,
         "dps": 2.25,
         "totalAssets": 35314587.0,
-        "totalEquity": 33799976.0,
-        "eps": -0.64
+        "totalEquity": 33799976.0
       },
       {
         "year": 2023,
@@ -2828,7 +2715,7 @@ const NSE_COMPANIES = {
         "periodType": "half_year",
         "pat": 117498.0,
         "pbt": 171119.0,
-        "eps": -0.64,
+        "eps": 2701382.0,
         "totalEquity": 5595949.0
       },
       {
@@ -2883,7 +2770,7 @@ const NSE_COMPANIES = {
         "period": "H1 Jun2022",
         "periodType": "half_year",
         "revenue": 5664278.0,
-        "eps": null,
+        "eps": 144000000.0,
         "totalAssets": 36303129.0,
         "totalEquity": 308016.0
       },
@@ -2913,36 +2800,6 @@ const NSE_COMPANIES = {
         "year": 2021,
         "period": "Q3 2021",
         "periodType": "quarter"
-      },
-      {
-        "year": 2020,
-        "period": "H1 2020",
-        "periodType": "quarter",
-        "revenue": 166924249,
-        "pat": 86033091,
-        "totalAssets": 3816655769,
-        "totalEquity": 3816655769
-      },
-      {
-        "year": 2019,
-        "period": "Q1 2019",
-        "periodType": "quarter",
-        "revenue": 3906,
-        "pat": 7950819,
-        "eps": 6.96,
-        "dps": 3.9,
-        "totalAssets": 29129581,
-        "totalEquity": 25563510
-      },
-      {
-        "year": 2019,
-        "period": "Q3 2019",
-        "periodType": "quarter",
-        "revenue": 35267,
-        "pat": 372993,
-        "pbt": 377379,
-        "eps": 0.9,
-        "dps": 3.9
       }
     ]
   },
@@ -2977,28 +2834,28 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "revenue": 62400000,
-      "pat": 5550000,
-      "pbt": null,
-      "eps": null,
-      "dps": 15.0,
-      "totalAssets": 251080000
+      "revenue": 25676005.0,
+      "pat": 4721821.0,
+      "pbt": 6224690.0,
+      "eps": 65.0,
+      "dps": 13.5,
+      "serviceResult": 699863.0,
+      "insuranceServiceExpense": -24223450.0,
+      "netReinsExpense": -752692.0,
+      "totalAssets": 213577754.0,
+      "totalEquity": 51182318.0,
+      "totalLiabilities": 162395436.0,
+      "netInvestmentIncome": 4068145.0,
+      "insuranceContractLiab": 153035847.0,
+      "reinsuranceContractAssets": 3968017.0,
+      "investmentAssets": 188607940.0,
+      "cashAndEquivalents": 11242772.0,
+      "gwp": 53000000.0
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "revenue": 62400000,
-        "pat": 5550000,
-        "pbt": null,
-        "eps": null,
-        "dps": 15.0,
-        "totalAssets": 251080000
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -3295,7 +3152,7 @@ const NSE_COMPANIES = {
         "revenue": 388221.0,
         "eps": -1.93,
         "totalAssets": 1928784.0,
-        "totalEquity": null
+        "totalEquity": 4194593.0
       },
       {
         "year": 2018,
@@ -3340,30 +3197,27 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "pat": 68350000,
-      "pbt": null,
-      "eps": null,
-      "dps": 7.0,
-      "totalAssets": 2147210000,
-      "totalEquity": 331470000,
-      "deposits": 1592610000
+      "revenue": 204866691.0,
+      "pat": 60089353.0,
+      "pbt": 81972627.0,
+      "nii": 137346043.0,
+      "eps": 18.7,
+      "dps": 3.0,
+      "totalAssets": 1962320080.0,
+      "totalEquity": 274889584.0,
+      "deposits": 1381975669.0,
+      "loans": 990412959.0,
+      "interestIncome": 225807000,
+      "interestExpense": 76056000,
+      "loanLossProvision": 29694000,
+      "totalOpex": 90611000,
+      "provisionToInterestIncome": 13.2,
+      "costToIncomeRatio": 44.2
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "pat": 68350000,
-        "pbt": null,
-        "eps": null,
-        "dps": 7.0,
-        "totalAssets": 2147210000,
-        "totalEquity": 331470000,
-        "deposits": 1592610000
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -3488,18 +3342,6 @@ const NSE_COMPANIES = {
       }
     ],
     "quarters": [
-      {
-        "year": 2026,
-        "period": "Q1 2026",
-        "periodType": "quarter",
-        "revenue": 53640000,
-        "pat": 18200000,
-        "pbt": 24430000,
-        "nii": 36610000,
-        "eps": 22.18,
-        "totalAssets": 2250000000,
-        "deposits": 1650000000
-      },
       {
         "year": 2025,
         "period": "Q3 2025",
@@ -3800,7 +3642,7 @@ const NSE_COMPANIES = {
         "pat": 10481.0,
         "pbt": 15473.0,
         "eps": 1.59,
-        "dps": null,
+        "dps": 8482.0,
         "totalEquity": 284544.0
       },
       {
@@ -3929,7 +3771,7 @@ const NSE_COMPANIES = {
         "revenue": 69014.0,
         "pat": 6103.0,
         "pbt": -7042.0,
-        "eps": null,
+        "eps": -939.0,
         "totalAssets": 398000000.0,
         "totalEquity": 48000000.0
       }
@@ -3986,51 +3828,11 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2023,
-      "period": "FY2023",
-      "periodType": "annual",
-      "revenue": 11172857,
-      "pat": null,
-      "pbt": -3568992,
-      "nii": 7904047,
-      "eps": -0.71,
-      "totalAssets": 161106364,
-      "deposits": 118307630
+      "year": 2019,
+      "period": "H1 Jun2019",
+      "periodType": "half_year"
     },
-    "annuals": [
-      {
-        "year": 2023,
-        "period": "FY2023",
-        "periodType": "annual",
-        "revenue": 11172857,
-        "pat": null,
-        "pbt": -3568992,
-        "nii": 7904047,
-        "eps": -0.71,
-        "totalAssets": 161106364,
-        "deposits": 118307630
-      },
-      {
-        "year": 2022,
-        "period": "FY2022",
-        "periodType": "annual",
-        "revenue": 11700000,
-        "pat": 828000,
-        "pbt": null,
-        "eps": null,
-        "totalAssets": 143000000
-      },
-      {
-        "year": 2021,
-        "period": "FY2021",
-        "periodType": "annual",
-        "revenue": 10200000,
-        "pat": 1100000,
-        "pbt": null,
-        "eps": null,
-        "totalAssets": 146000000
-      }
-    ],
+    "annuals": [],
     "quarters": [
       {
         "year": 2019,
@@ -4076,30 +3878,28 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "revenue": 73300000,
-      "pat": 23400000,
-      "pbt": 27900000,
-      "eps": null,
-      "dps": 7.1,
-      "totalAssets": 716000000,
-      "deposits": 532000000
+      "revenue": 62697869.0,
+      "pat": 21865767.0,
+      "pbt": 25141048.0,
+      "nii": 34514684.0,
+      "eps": 13.27,
+      "dps": 5.5,
+      "totalAssets": 665943764.0,
+      "totalEquity": 109714749.0,
+      "deposits": 502016493.0,
+      "loans": 302077630.0,
+      "interestIncome": 42021625,
+      "interestExpense": 35262483,
+      "totalOpex": 5206348,
+      "loanLossProvision": 10318955,
+      "costToIncomeRatio": 10.2,
+      "provisionToInterestIncome": 24.6,
+      "nonInterestIncome": 9173241
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "revenue": 73300000,
-        "pat": 23400000,
-        "pbt": 27900000,
-        "eps": null,
-        "dps": 7.1,
-        "totalAssets": 716000000,
-        "deposits": 532000000
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -4233,14 +4033,14 @@ const NSE_COMPANIES = {
         "pbt": 453800.0,
         "eps": 33.41,
         "dps": 5.31,
-        "totalAssets": null,
+        "totalAssets": 4833.0,
         "totalEquity": 811698.0
       },
       {
         "year": 2023,
         "period": "H1 Jun2023",
         "periodType": "half_year",
-        "revenue": null,
+        "revenue": 2018.0,
         "pat": 9348216.0,
         "eps": 15.05,
         "dps": 9.76
@@ -4249,7 +4049,7 @@ const NSE_COMPANIES = {
         "year": 2022,
         "period": "H1 Jun2022",
         "periodType": "half_year",
-        "revenue": null,
+        "revenue": 2018.0,
         "pat": 7770642.0,
         "eps": 14.58,
         "dps": 6.08
@@ -4325,26 +4125,15 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2025,
-      "period": "FY2025",
+      "year": 2024,
+      "period": "FY2024",
       "periodType": "annual",
-      "revenue": 6039400,
-      "pat": -308600,
-      "pbt": null,
-      "eps": -1.8,
-      "dps": 0
+      "revenue": 6200000.0,
+      "pbt": -253600.0,
+      "eps": -1.5,
+      "dps": 0.0
     },
     "annuals": [
-      {
-        "year": 2025,
-        "period": "FY2025",
-        "periodType": "annual",
-        "revenue": 6039400,
-        "pat": -308600,
-        "pbt": null,
-        "eps": -1.8,
-        "dps": 0
-      },
       {
         "year": 2024,
         "period": "FY2024",
@@ -4394,7 +4183,7 @@ const NSE_COMPANIES = {
         "year": 2021,
         "period": "FY2021",
         "periodType": "annual",
-        "revenue": null,
+        "revenue": 2021.0,
         "pbt": 731.0,
         "eps": 2.5,
         "dps": 1.5,
@@ -4493,24 +4282,14 @@ const NSE_COMPANIES = {
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2023,
-      "period": "FY2023",
+      "year": 2021,
+      "period": "FY2021",
       "periodType": "annual",
-      "revenue": 662321,
-      "pat": 18404,
-      "pbt": 42326,
-      "eps": 0.07
+      "revenue": 960969.0,
+      "totalAssets": 31953.0,
+      "totalEquity": 15091.0
     },
     "annuals": [
-      {
-        "year": 2023,
-        "period": "FY2023",
-        "periodType": "annual",
-        "revenue": 662321,
-        "pat": 18404,
-        "pbt": 42326,
-        "eps": 0.07
-      },
       {
         "year": 2021,
         "period": "FY2021",
@@ -4549,16 +4328,6 @@ const NSE_COMPANIES = {
       }
     ],
     "quarters": [
-      {
-        "year": 2024,
-        "period": "H1 2024",
-        "periodType": "half",
-        "revenue": 429468,
-        "pat": 54720,
-        "pbt": 80007,
-        "eps": 0.21,
-        "totalAssets": 2116337
-      },
       {
         "year": 2024,
         "period": "H1 Jun2024",
@@ -4614,42 +4383,15 @@ const NSE_COMPANIES = {
     "latestPrice": null,
     "latestPeriod": {
       "year": 2024,
-      "period": "FY2024",
-      "periodType": "annual",
-      "revenue": 6893826,
-      "pbt": -674378,
-      "pat": -562869,
-      "eps": -2.42,
-      "dps": 0,
-      "totalAssets": 25184539,
-      "totalEquity": 21247981
+      "period": "Q1 2024",
+      "periodType": "quarter",
+      "revenue": 2998443.0,
+      "pat": 124692.0,
+      "eps": -0.16,
+      "totalAssets": -31849.0,
+      "totalEquity": 14403282.0
     },
-    "annuals": [
-      {
-        "year": 2024,
-        "period": "FY2024",
-        "periodType": "annual",
-        "revenue": 6893826,
-        "pbt": -674378,
-        "pat": -562869,
-        "eps": -2.42,
-        "dps": 0,
-        "totalAssets": 25184539,
-        "totalEquity": 21247981
-      },
-      {
-        "year": 2023,
-        "period": "FY2023",
-        "periodType": "annual",
-        "revenue": 5718437,
-        "pbt": 872998,
-        "pat": 542556,
-        "eps": 2.41,
-        "dps": 1.5,
-        "totalAssets": 16298808,
-        "totalEquity": 13809574
-      }
-    ],
+    "annuals": [],
     "quarters": [
       {
         "year": 2024,
@@ -4658,7 +4400,7 @@ const NSE_COMPANIES = {
         "revenue": 2998443.0,
         "pat": 124692.0,
         "eps": -0.16,
-        "totalAssets": null,
+        "totalAssets": -31849.0,
         "totalEquity": 14403282.0
       },
       {
@@ -4758,7 +4500,7 @@ const NSE_COMPANIES = {
         "year": 2024,
         "period": "H1 Jun2024",
         "periodType": "half_year",
-        "totalAssets": null,
+        "totalAssets": -206205.0,
         "totalEquity": 4948129.0
       },
       {
@@ -4827,15 +4569,15 @@ const NSE_COMPANIES = {
         "year": 2024,
         "period": "FY2024",
         "periodType": "annual",
-        "revenue": 50700000,
-        "pat": 20100000,
+        "revenue": 50677085.0,
+        "pat": 20060587,
         "pbt": 28208236,
         "nii": 33265303,
         "eps": 52.65,
         "dps": 45.0,
-        "totalAssets": 384600000,
+        "totalAssets": 384574089.0,
         "totalEquity": 71776120.0,
-        "deposits": 295700000,
+        "deposits": 295690089.0,
         "loans": 151647379.0,
         "interestIncome": 38815684,
         "interestExpense": 5550381,
@@ -5008,54 +4750,21 @@ const NSE_COMPANIES = {
     "exchange": "NSE",
     "sector": "Telecoms & Technology",
     "logo": "📱",
-    "description": "Safaricom PLC is Kenya's largest telecommunications and technology company and the most profitable firm in East and Central Africa. Listed on the NSE since 2008, it provides mobile voice and data services, the M-PESA mobile-money platform (over 40 million active customers), home fibre and enterprise solutions, and operates in Ethiopia through Safaricom Telecommunications Ethiopia.",
-    "staticNews": [
-      {
-        "title": "Safaricom Group revenue hits KES 414 billion with net income of KES 100 billion in FY26",
-        "url": "https://www.safaricom.co.ke/media-center-landing/press-releases/safaricom-group-revenue-hits-kes414billion-with-net-income-of-kes100-billion-in-fy26",
-        "source": "Safaricom",
-        "date": "2026-05-07"
-      },
-      {
-        "title": "Safaricom breaks dividend freeze with record KSh 2.00 dividend per share",
-        "url": "https://kenyanwallstreet.com/safaricom-fy2026-dividend",
-        "source": "The Kenyan Wallstreet",
-        "date": "2026-05-07"
-      },
-      {
-        "title": "M-PESA hits 40 million active customers as it marks its 19th anniversary",
-        "url": "",
-        "source": "Safaricom",
-        "date": "2026-06-03"
-      }
-    ],
     "currency": "KES",
     "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
-      "year": 2026,
-      "period": "FY2026",
+      "year": 2025,
+      "period": "FY2025",
       "periodType": "annual",
-      "revenue": 414100000.0,
-      "pat": 95610000.0,
-      "pbt": null,
-      "eps": 2.39,
-      "dps": 2.0,
-      "mpesa": 182700000.0
+      "revenue": 388680000.0,
+      "pat": 69714000.0,
+      "pbt": 93210000.0,
+      "eps": 1.74,
+      "dps": 1.2,
+      "mpesa": 161100000.0
     },
     "annuals": [
-      {
-        "year": 2026,
-        "period": "FY2026",
-        "periodType": "annual",
-        "revenue": 414100000.0,
-        "serviceRevenue": 414100000.0,
-        "pat": 95610000.0,
-        "pbt": null,
-        "eps": 2.39,
-        "dps": 2.0,
-        "mpesa": 182700000.0
-      },
       {
         "year": 2025,
         "period": "FY2025",
@@ -5195,18 +4904,6 @@ const NSE_COMPANIES = {
       },
       {
         "year": 2023,
-        "period": "Q3 2023",
-        "periodType": "quarter",
-        "revenue": 176900000,
-        "pat": 28700000,
-        "pbt": 43500000,
-        "eps": 7.17,
-        "dps": 0.0,
-        "totalAssets": 605000000,
-        "totalEquity": 195000000
-      },
-      {
-        "year": 2023,
         "period": "H1 Sep2023",
         "periodType": "half_year",
         "revenue": 176900000.0,
@@ -5217,17 +4914,6 @@ const NSE_COMPANIES = {
         "totalAssets": 605000000.0,
         "totalEquity": 195000000.0,
         "mpesa": 63600000.0
-      },
-      {
-        "year": 2022,
-        "period": "Q3 2022",
-        "periodType": "quarter",
-        "revenue": 158990000,
-        "pat": 33800000,
-        "pbt": 51200000,
-        "eps": 8.45,
-        "totalAssets": 561000000,
-        "totalEquity": 170000000
       },
       {
         "year": 2022,
@@ -5243,17 +4929,6 @@ const NSE_COMPANIES = {
       },
       {
         "year": 2021,
-        "period": "Q3 2021",
-        "periodType": "quarter",
-        "revenue": 139620000,
-        "pat": 37420000,
-        "pbt": 54400000,
-        "eps": 9.35,
-        "totalAssets": 397000000,
-        "totalEquity": 142000000
-      },
-      {
-        "year": 2021,
         "period": "H1 Sep2021",
         "periodType": "half_year",
         "revenue": 139620000.0,
@@ -5263,17 +4938,6 @@ const NSE_COMPANIES = {
         "totalAssets": 397000000.0,
         "totalEquity": 142000000.0,
         "mpesa": 52180000.0
-      },
-      {
-        "year": 2020,
-        "period": "Q3 2020",
-        "periodType": "quarter",
-        "revenue": 127500000,
-        "pat": 35650000,
-        "pbt": 46600000,
-        "eps": 8.91,
-        "totalAssets": 370000000,
-        "totalEquity": 128000000
       },
       {
         "year": 2020,
@@ -5374,9 +5038,9 @@ const NSE_COMPANIES = {
         "year": 2021,
         "period": "FY2021",
         "periodType": "annual",
-        "revenue": null,
+        "revenue": 2022.0,
         "eps": -0.81,
-        "dps": null,
+        "dps": -3765.0,
         "totalAssets": 4354312.0,
         "totalEquity": 1046422.0
       }
@@ -5397,7 +5061,7 @@ const NSE_COMPANIES = {
         "periodType": "half_year",
         "revenue": 1260781.0,
         "eps": -1.29,
-        "dps": null,
+        "dps": 57033.0,
         "totalAssets": 4927856.0,
         "totalEquity": 78312.0
       },
@@ -5416,7 +5080,7 @@ const NSE_COMPANIES = {
         "periodType": "half_year",
         "revenue": 2403211.0,
         "eps": 0.59,
-        "dps": null,
+        "dps": -86353.0,
         "totalAssets": 4628538.0,
         "totalEquity": 1932987.0
       }
@@ -5553,7 +5217,7 @@ const NSE_COMPANIES = {
         "periodType": "half_year",
         "revenue": 3723602.0,
         "pbt": -54736.0,
-        "eps": null,
+        "eps": 144000000.0,
         "totalAssets": 35644065.0,
         "totalEquity": 820351.0
       }
@@ -5698,22 +5362,12 @@ const NSE_COMPANIES = {
     "latestPrice": null,
     "latestPeriod": {
       "year": 2023,
-      "period": "FY2023",
-      "periodType": "annual",
-      "revenue": null,
-      "pat": 870870,
-      "pbt": null
+      "period": "H1 Jun2023",
+      "periodType": "half_year",
+      "revenue": 3759960.0,
+      "totalEquity": 10082892.0
     },
-    "annuals": [
-      {
-        "year": 2023,
-        "period": "FY2023",
-        "periodType": "annual",
-        "revenue": null,
-        "pat": 870870,
-        "pbt": null
-      }
-    ],
+    "annuals": [],
     "quarters": [
       {
         "year": 2023,
@@ -5751,8 +5405,8 @@ const NSE_COMPANIES = {
         "date": "2025-03-05"
       }
     ],
-    "currency": "UGX",
-    "units": "millions",
+    "currency": "KES",
+    "units": "thousands",
     "latestPrice": null,
     "latestPeriod": {
       "year": 2023,
@@ -5769,25 +5423,11 @@ const NSE_COMPANIES = {
         "year": 2023,
         "period": "FY2023",
         "periodType": "annual",
-        "revenue": 2196363,
-        "pat": 11470,
-        "pbt": 15384,
+        "revenue": 2023.0,
+        "pat": 11470.0,
+        "pbt": 15384.0,
         "eps": 7.1,
-        "totalAssets": 2347235,
-        "dps": 78.2,
-        "totalEquity": 937000
-      },
-      {
-        "year": 2022,
-        "period": "FY2022",
-        "periodType": "annual",
-        "revenue": 1887326,
-        "pat": 148215,
-        "pbt": 214873,
-        "eps": 91.3,
-        "dps": 63.9,
-        "totalAssets": 2571066,
-        "totalEquity": 1010000
+        "totalAssets": 2347235.0
       }
     ],
     "quarters": [
@@ -5804,7 +5444,7 @@ const NSE_COMPANIES = {
         "year": 2023,
         "period": "H1 Jun2023",
         "periodType": "half_year",
-        "revenue": null,
+        "revenue": 2023.0,
         "pat": 2022.0,
         "pbt": 16667.0,
         "totalAssets": 33333.0,
@@ -5817,7 +5457,7 @@ const NSE_COMPANIES = {
         "periodType": "half_year",
         "pat": 64376.0,
         "pbt": 92779.0,
-        "totalAssets": null,
+        "totalAssets": 10467.0,
         "totalEquity": 2644855.0
       }
     ]
@@ -5875,24 +5515,12 @@ const NSE_COMPANIES = {
         "year": 2021,
         "period": "FY2021",
         "periodType": "annual",
-        "revenue": 17812638,
-        "pat": 293477,
-        "pbt": 485232,
-        "eps": 2.39,
-        "totalAssets": 10048779,
-        "totalEquity": 9905921.0,
-        "dps": 0
-      },
-      {
-        "year": 2020,
-        "period": "FY2020",
-        "periodType": "annual",
-        "revenue": 17569967,
-        "pat": 66161,
-        "pbt": 118090,
-        "eps": 0.45,
-        "dps": 0,
-        "totalAssets": 12050876
+        "revenue": 8822553.0,
+        "pat": 8452.0,
+        "pbt": -16743.0,
+        "eps": 0.003,
+        "totalAssets": 9905921.0,
+        "totalEquity": 9905921.0
       }
     ],
     "quarters": [
@@ -6284,27 +5912,6 @@ const NSE_COMPANIES = {
     "latestPrice": null,
     "annuals": [
       {
-        "year": 2024,
-        "period": "FY2024",
-        "periodType": "annual",
-        "revenue": 10950000,
-        "pat": 1390000,
-        "pbt": 2090000,
-        "eps": 2.59,
-        "dps": null,
-        "totalAssets": 48100000
-      },
-      {
-        "year": 2023,
-        "period": "FY2023",
-        "periodType": "annual",
-        "revenue": null,
-        "pat": 671900,
-        "pbt": null,
-        "eps": null,
-        "totalAssets": 43800000
-      },
-      {
         "year": 2020,
         "period": "FY2020",
         "periodType": "annual",
@@ -6348,15 +5955,25 @@ const NSE_COMPANIES = {
     ],
     "quarters": [],
     "latestPeriod": {
-      "year": 2024,
-      "period": "FY2024",
+      "year": 2020,
+      "period": "FY2020",
       "periodType": "annual",
-      "revenue": 10950000,
-      "pat": 1390000,
-      "pbt": 2090000,
-      "eps": 2.59,
-      "dps": null,
-      "totalAssets": 48100000
+      "revenue": 11176458.0,
+      "pat": 675946.0,
+      "pbt": 1043897.0,
+      "eps": 1.23,
+      "dps": 0.0,
+      "insuranceServiceExpense": -6792094.0,
+      "netReinsExpense": -4490596.0,
+      "interestIncome": 506922.0,
+      "netInvestmentIncome": 131203.0,
+      "totalAssets": 39301229.0,
+      "totalEquity": 8705185.0,
+      "totalLiabilities": 30596044.0,
+      "insuranceContractLiab": 33597946.0,
+      "reinsuranceContractAssets": 3165004.0,
+      "investmentAssets": 23357471.0,
+      "cashAndEquivalents": 5735467.0
     }
   },
   "KNRE": {

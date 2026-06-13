@@ -18,6 +18,20 @@
   <title>NSE Insights — Dashboard</title>
   <link rel="stylesheet" href="styles.css?v=12" />
   <script src="config.js"></script>
+  <script src="supabase-client.js"></script>
+  <script src="tier-access.js"></script>
+  <!-- Auth guard: redirect to landing if not signed in -->
+  <script>
+    (async () => {
+      if (!window.AuthAPI) return;
+      try {
+        const user = await window.AuthAPI.getUser();
+        if (!user && !window.AuthAPI.DEMO_MODE) {
+          window.location.replace('landing.html?reason=auth');
+        }
+      } catch(e) { /* network error — allow through */ }
+    })();
+  </script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.1/dist/chartjs-chart-financial.min.js"></script>
@@ -43,9 +57,11 @@
     </div>
     <div class="topnav-right nav-desktop">
       <button class="theme-toggle" id="theme-toggle" title="Toggle light/dark mode" onclick="toggleTheme()">Dark</button>
-      <a href="admin.html" class="admin-padlock" title="Admin Review">A</a>
-      <a href="login.html" class="btn-login">Log in</a>
-      <a href="login.html#signup" class="btn-getstarted">Get started</a>
+      <a href="admin_review.html" class="admin-padlock" id="admin-link" title="Admin Review" style="display:none;">A</a>
+      <span class="tier-badge" id="tier-badge" style="font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:4px;background:rgba(30,136,255,.12);color:#4ba3ff;display:none;"></span>
+      <span id="nav-user-name" style="font-size:.82rem;color:var(--text-secondary);display:none;"></span>
+      <button id="nav-signout" onclick="handleSignOut()" style="display:none;font-size:.82rem;padding:.3rem .7rem;border:1px solid var(--border);border-radius:6px;background:transparent;cursor:pointer;color:var(--text-secondary);">Sign out</button>
+      <a href="login.html" class="btn-login" id="nav-signin" style="display:none;">Log in</a>
     </div>
   </nav>
 
@@ -558,12 +574,52 @@
     <div class="footer-right">© 2026 NSE Insights</div>
   </footer>
 
-  <script src="data.js?v=10"></script>
-  <script src="sector-detail.js?v=2"></script>
-  <script src="app.js?v=33"></script>
+  <script src="data.js?v=11"></script>
+  <script src="sector-detail.js?v=3"></script>
+  <script src="app.js?v=34"></script>
   <script src="feedback.js?v=1"></script>
   <script>
-    if ('serviceWorker' in navigator) { window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{})); }
+    // Wire up nav user state + tier after app boots
+    (async () => {
+      if (!window.AuthAPI) {
+        document.getElementById('nav-signin').style.display = 'inline-flex';
+        return;
+      }
+      try {
+        const user = await window.AuthAPI.getUser();
+        if (user) {
+          const name = user.user_metadata?.first_name || user.email?.split('@')[0] || 'User';
+          document.getElementById('nav-user-name').textContent = name;
+          document.getElementById('nav-user-name').style.display = 'inline';
+          document.getElementById('nav-signout').style.display = 'inline-flex';
+          // Tier
+          const tier = await refreshTierFromServer();
+          const badge = document.getElementById('tier-badge');
+          badge.textContent = tier.toUpperCase();
+          badge.style.display = 'inline';
+          // Admin link
+          if (tierAccess.canViewAdmin()) {
+            document.getElementById('admin-link').style.display = 'inline-flex';
+          }
+          // Apply year filter to app (if function exists)
+          if (window.applyTierFilter) window.applyTierFilter(tierAccess);
+        } else {
+          document.getElementById('nav-signin').style.display = 'inline-flex';
+        }
+      } catch(e) {
+        document.getElementById('nav-signin').style.display = 'inline-flex';
+      }
+    })();
+
+    async function handleSignOut() {
+      if (window.AuthAPI && window.AuthAPI.signOut) await window.AuthAPI.signOut();
+      localStorage.removeItem('userTier');
+      window.location.href = 'landing.html';
+    }
+
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(()=>{}));
+    }
   </script>
 </body>
 </html>
