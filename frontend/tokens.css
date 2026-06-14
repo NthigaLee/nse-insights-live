@@ -154,43 +154,49 @@
   --content-wide: 1320px;
 }
 
-/* Dark Mode */
+/* Dark Mode — matches landing page ink palette */
 body.dark, html.dark {
-  --bg-base:        #06111f;
-  --bg-surface:     #0a1b2e;
-  --bg-card:        #0f2339;
-  --bg-card-hover:  #132d48;
-  --bg-sunk:        #050d17;
+  --bg-base:        #0a1220;    /* ink-900, same as landing */
+  --bg-surface:     #0d1828;
+  --bg-card:        #111e30;
+  --bg-card-hover:  #162440;
+  --bg-sunk:        #07101c;
+  --bg-hover:       rgba(255,255,255,0.05);
   --bg-inverse:     var(--cream);
 
-  --text-primary:   #f2ece0;
-  --text-secondary: #c1cad6;
-  --text-muted:     #8b97a6;
-  --text-dim:       #5c6775;
+  --text-primary:   #e8edf5;   /* ink-foreground, same as landing */
+  --text-secondary: rgba(232,237,245,0.72);
+  --text-muted:     rgba(232,237,245,0.48);
+  --text-dim:       rgba(232,237,245,0.30);
   --text-on-navy:   #ffffff;
   --text-on-gold:   var(--ink-900);
 
-  --border:         rgba(201, 169, 97, 0.18);
-  --border-strong:  rgba(201, 169, 97, 0.35);
-  --border-gold:    rgba(201, 169, 97, 0.55);
-  --border-dim:     rgba(255, 255, 255, 0.06);
+  --border:         rgba(255,255,255,0.08);   /* matches landing card borders */
+  --border-strong:  rgba(255,255,255,0.14);
+  --border-gold:    rgba(201, 169, 97, 0.45);
+  --border-dim:     rgba(255,255,255,0.05);
 
   --accent:          var(--blue-500);
   --accent-hover:    var(--blue-400);
   --accent-soft:     rgba(30, 136, 255, 0.18);
   --accent-contrast: #ffffff;
 
-  --glass-bg:        rgba(15, 35, 57, 0.55);
-  --glass-bg-strong: rgba(15, 35, 57, 0.78);
-  --glass-border:    rgba(201, 169, 97, 0.12);
+  --glass-bg:        rgba(10, 18, 32, 0.60);
+  --glass-bg-strong: rgba(10, 18, 32, 0.85);
+  --glass-border:    rgba(255,255,255,0.08);
+
+  --up:              #4ade80;
+  --up-soft:         rgba(74, 222, 128, 0.12);
+  --down:            #f87171;
+  --down-soft:       rgba(248, 113, 113, 0.12);
 
   --chart-latest: var(--gold-500);
   --chart-hist:   rgba(201, 169, 97, 0.42);
   --chart-grid:   rgba(255, 255, 255, 0.06);
 
-  --shadow-sm: 0 2px 6px rgba(0,0,0,0.40);
-  --shadow-md: 0 6px 18px rgba(0,0,0,0.45);
-  --shadow-lg: 0 18px 48px rgba(0,0,0,0.55);
+  --shadow-sm: 0 2px 6px rgba(0,0,0,0.50);
+  --shadow-md: 0 6px 18px rgba(0,0,0,0.55);
+  --shadow-lg: 0 18px 48px rgba(0,0,0,0.65);
 }
 
 /* Base */

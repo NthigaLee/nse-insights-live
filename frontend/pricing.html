@@ -14,12 +14,34 @@
 <meta name="description" content="Simple, transparent pricing for NSE Insights. Pay with card or M-Pesa." />
 <link rel="stylesheet" href="tokens.css" />
 <style>
+  /* Force dark ink theme */
+  html, body {
+    background: #0a1220 !important;
+    color: #e8edf5 !important;
+    --bg-base: #0a1220;
+    --bg-surface: #0d1828;
+    --bg-card: #111e30;
+    --bg-card-hover: #162440;
+    --bg-sunk: rgba(255,255,255,0.04);
+    --text-primary: #e8edf5;
+    --text-secondary: rgba(232,237,245,0.72);
+    --text-muted: rgba(232,237,245,0.48);
+    --border: rgba(255,255,255,0.08);
+    --border-strong: rgba(255,255,255,0.14);
+    --border-dim: rgba(255,255,255,0.05);
+    --border-gold: rgba(201,169,97,0.45);
+    --gold-600: #a8872f;
+    --gold-700: #8a6f2b;
+  }
+
   .nav {
     position: sticky; top: 0; z-index: 50;
-    background: rgba(251, 248, 242, 0.88);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--border);
+    background: rgba(10,18,32,0.88);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid rgba(255,255,255,0.07);
   }
+  .nav .nav-links a { color: rgba(232,237,245,0.55); }
+  .nav .nav-links a:hover { color: #e8edf5; }
   .nav-inner {
     max-width: var(--content-wide);
     margin: 0 auto;
@@ -40,7 +62,7 @@
     letter-spacing: -0.02em;
     margin-bottom: 1rem;
   }
-  .pricing-hero h1 em { color: var(--gold-600); font-style: italic; font-weight: 600; }
+  .pricing-hero h1 em { color: var(--gold-400); font-style: italic; font-weight: 600; }
   .pricing-hero p.lead {
     font-size: 1.1rem; color: var(--text-secondary);
     max-width: 620px; margin: 0 auto 2rem;
@@ -73,9 +95,9 @@
     gap: 0.5rem;
   }
   .billing-toggle button.active {
-    background: var(--navy-900);
-    color: var(--text-on-navy);
-    box-shadow: var(--shadow-sm);
+    background: var(--blue-500);
+    color: #ffffff;
+    box-shadow: 0 2px 8px rgba(30,136,255,0.30);
   }
   .billing-toggle .save-chip {
     background: var(--gold-500);
@@ -113,10 +135,9 @@
   .plan:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
   .plan.featured {
     border: 1.5px solid var(--gold-500);
-    box-shadow: var(--shadow-gold);
-    background: linear-gradient(180deg, #fdf8ec 0%, var(--paper) 70%);
+    box-shadow: 0 4px 24px rgba(201,169,97,0.18);
+    background: linear-gradient(180deg, rgba(201,169,97,0.08) 0%, var(--bg-card) 70%);
   }
-  body.dark .plan.featured { background: linear-gradient(180deg, rgba(201,169,97,0.08) 0%, var(--bg-card) 70%); }
 
   .plan-tag {
     position: absolute;
@@ -274,7 +295,7 @@
   .faq details summary::after {
     content: '+';
     font-size: 1.4rem;
-    color: var(--gold-600);
+    color: var(--gold-400);
     font-weight: 300;
     transition: transform 0.2s ease;
   }
@@ -287,8 +308,8 @@
 
   /* Footer */
   footer {
-    background: var(--navy-900);
-    color: var(--text-on-navy);
+    background: #07101c;
+    color: #e8edf5;
     padding: 3rem 1.5rem 1.5rem;
   }
   footer .foot-inner {
@@ -422,7 +443,7 @@
   .demo-banner.visible { display: block; }
 </style>
 </head>
-<body class="light">
+<body class="dark">
 
 <nav class="nav">
   <div class="nav-inner">

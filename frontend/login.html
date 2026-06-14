@@ -18,7 +18,7 @@
       display: grid;
       grid-template-columns: 1fr 1fr;
       min-height: 100vh;
-      background: var(--bg-base);
+      background: #0a1220;
     }
 
     /* ── LEFT — brand panel ─────────────────────── */
@@ -112,6 +112,7 @@
       align-items: center;
       justify-content: center;
       padding: 3rem 2rem;
+      background: #0a1220;
     }
     .auth-box { width: 100%; max-width: 440px; }
 
@@ -119,19 +120,19 @@
       font-family: var(--font-serif);
       font-size: 1.7rem;
       font-weight: 700;
-      color: var(--navy-900);
+      color: #e8edf5;
       margin-bottom: 0.35rem;
     }
     .auth-subheading {
       font-size: 0.9rem;
-      color: var(--text-muted);
+      color: rgba(232,237,245,0.55);
       margin-bottom: 1.8rem;
     }
 
     .auth-tabs {
       display: flex;
-      background: var(--bg-sunk);
-      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
       border-radius: var(--radius-md);
       padding: 0.3rem;
       margin-bottom: 1.5rem;
@@ -140,7 +141,7 @@
       flex: 1;
       background: transparent;
       border: none;
-      color: var(--text-muted);
+      color: rgba(232,237,245,0.50);
       padding: 0.55rem;
       border-radius: 7px;
       font-size: 0.85rem;
@@ -149,9 +150,9 @@
       transition: all 0.2s;
     }
     .auth-tab.active {
-      background: var(--bg-surface);
-      color: var(--navy-900);
-      box-shadow: var(--shadow-xs);
+      background: rgba(255,255,255,0.08);
+      color: #e8edf5;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.4);
     }
 
     .btn-google {
@@ -160,9 +161,9 @@
       align-items: center;
       justify-content: center;
       gap: 0.65rem;
-      background: var(--bg-surface);
-      border: 1px solid var(--border);
-      color: var(--text-primary);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #e8edf5;
       padding: 0.75rem;
       border-radius: var(--radius-md);
       font-size: 0.88rem;
@@ -171,35 +172,35 @@
       transition: all 0.2s;
       margin-bottom: 1.2rem;
     }
-    .btn-google:hover { border-color: var(--navy-700); background: var(--bg-card-hover); box-shadow: var(--shadow-sm); }
+    .btn-google:hover { border-color: rgba(255,255,255,0.20); background: rgba(255,255,255,0.08); }
 
     .divider { display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem; }
-    .divider-line { flex: 1; height: 1px; background: var(--border); }
-    .divider-text { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+    .divider-line { flex: 1; height: 1px; background: rgba(255,255,255,0.08); }
+    .divider-text { font-size: 0.72rem; color: rgba(232,237,245,0.40); text-transform: uppercase; letter-spacing: 0.1em; }
 
     .field { margin-bottom: 1rem; }
     .field label {
       display: block;
       font-size: 0.8rem;
       font-weight: 600;
-      color: var(--text-secondary);
+      color: rgba(232,237,245,0.65);
       margin-bottom: 0.4rem;
     }
     .field input {
       width: 100%;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-strong);
-      color: var(--text-primary);
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.10);
+      color: #e8edf5;
       padding: 0.72rem 0.95rem;
       border-radius: var(--radius-md);
       font-size: 0.92rem;
       outline: none;
       transition: all 0.15s;
     }
-    .field input::placeholder { color: var(--text-dim); }
+    .field input::placeholder { color: rgba(232,237,245,0.30); }
     .field input:focus {
-      border-color: var(--navy-700);
-      box-shadow: 0 0 0 3px rgba(10,37,64,0.08);
+      border-color: var(--blue-500);
+      box-shadow: 0 0 0 3px rgba(30,136,255,0.15);
     }
 
     .row-between {
@@ -213,27 +214,27 @@
       align-items: center;
       gap: 0.4rem;
       font-size: 0.78rem;
-      color: var(--text-muted);
+      color: rgba(232,237,245,0.48);
     }
     .forgot-link {
       font-size: 0.78rem;
-      color: var(--navy-700);
+      color: var(--blue-400);
       font-weight: 600;
       text-decoration: none;
     }
-    .forgot-link:hover { color: var(--gold-600); text-decoration: underline; }
+    .forgot-link:hover { color: var(--gold-400); text-decoration: underline; }
 
     .name-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
 
     .form-panel { display: none; }
     .form-panel.active { display: block; }
 
-    .auth-footer { text-align: center; font-size: 0.85rem; color: var(--text-muted); margin-top: 1.1rem; }
-    .auth-footer a { color: var(--navy-700); font-weight: 600; }
-    .auth-footer a:hover { color: var(--gold-600); }
+    .auth-footer { text-align: center; font-size: 0.85rem; color: rgba(232,237,245,0.48); margin-top: 1.1rem; }
+    .auth-footer a { color: var(--blue-400); font-weight: 600; }
+    .auth-footer a:hover { color: var(--gold-400); }
 
-    .terms-note { font-size: 0.72rem; color: var(--text-muted); text-align: center; line-height: 1.5; margin-top: 1rem; }
-    .terms-note a { color: var(--text-muted); text-decoration: underline; }
+    .terms-note { font-size: 0.72rem; color: rgba(232,237,245,0.40); text-align: center; line-height: 1.5; margin-top: 1rem; }
+    .terms-note a { color: rgba(232,237,245,0.50); text-decoration: underline; }
 
     .alert {
       padding: 0.7rem 1rem;
@@ -243,9 +244,9 @@
       display: none;
     }
     .alert.show { display: block; }
-    .alert-error { background: rgba(192,57,43,0.08); color: var(--down); border: 1px solid rgba(192,57,43,0.22); }
-    .alert-success { background: rgba(15,157,88,0.08); color: var(--up); border: 1px solid rgba(15,157,88,0.22); }
-    .alert-info { background: rgba(201,169,97,0.10); color: var(--gold-700); border: 1px solid var(--border-gold); }
+    .alert-error { background: rgba(248,113,113,0.10); color: #f87171; border: 1px solid rgba(248,113,113,0.25); }
+    .alert-success { background: rgba(74,222,128,0.10); color: #4ade80; border: 1px solid rgba(74,222,128,0.25); }
+    .alert-info { background: rgba(201,169,97,0.10); color: var(--gold-400); border: 1px solid rgba(201,169,97,0.25); }
 
     .back-home {
       position: absolute;

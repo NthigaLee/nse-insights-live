@@ -2837,15 +2837,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // ---- Theme Toggle ----
 function toggleTheme() {
-  // Default is LIGHT (cream + navy); toggle adds/removes .dark
-  document.body.classList.remove('light');
-  const isDark = document.body.classList.toggle('dark');
-  if (!isDark) document.body.classList.add('light');
+  // Default is DARK; toggle switches between dark and light
+  const isLight = document.body.classList.toggle('light');
+  document.body.classList.toggle('dark', !isLight);
   const btn = document.getElementById('theme-toggle');
   const mobileBtn = document.getElementById('theme-toggle-mobile');
-  if (btn) btn.textContent = isDark ? 'Light' : 'Dark';
-  if (mobileBtn) mobileBtn.textContent = isDark ? 'Light' : 'Dark';
-  try { localStorage.setItem('nse-theme', isDark ? 'dark' : 'light'); } catch(e) {}
+  if (btn) btn.textContent = isLight ? 'Dark' : 'Light';
+  if (mobileBtn) mobileBtn.textContent = isLight ? 'Dark' : 'Light';
+  try { localStorage.setItem('nse-theme', isLight ? 'light' : 'dark'); } catch(e) {}
 
   // Update chart colors without losing company context
   if (activeCompany) {
@@ -2867,12 +2866,12 @@ function toggleTheme() {
 function initTheme() {
   let saved = null;
   try { saved = localStorage.getItem('nse-theme'); } catch(e) {}
-  // Default is LIGHT (cream + navy). Only apply dark when explicitly saved.
-  document.body.classList.remove('dark');
-  document.body.classList.add('light');
-  if (saved === 'dark') {
-    document.body.classList.remove('light');
-    document.body.classList.add('dark');
+  // Default is DARK. Switch to light only when explicitly saved.
+  document.body.classList.remove('light');
+  document.body.classList.add('dark');
+  if (saved === 'light') {
+    document.body.classList.remove('dark');
+    document.body.classList.add('light');
   }
   const btn = document.getElementById('theme-toggle');
   const mobileBtn = document.getElementById('theme-toggle-mobile');
