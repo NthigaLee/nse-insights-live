@@ -19,7 +19,7 @@ git diff --cached --stat
 git status
 
 # 5. Commit
-git commit -m "UI: consistent dark + light themes across all pages
+git commit -m "Fix: charts visible in dark mode; sector years show all available data
 
 Dark mode (default):
 - tokens.css: ink-900 (#0a1220) palette, rgba(255,255,255,0.08) borders,

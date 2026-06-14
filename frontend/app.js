@@ -677,13 +677,17 @@ function sectorEmoji(sector) {
 }
 
 // ---- Chart.js Global Defaults ----
-Chart.defaults.color = '#334155';  /* slate-700, visible on cream bg */
-Chart.defaults.borderColor = 'rgba(10, 37, 64, 0.15)';
+function updateChartDefaults() {
+  const isDark = document.body.classList.contains('dark');
+  Chart.defaults.color       = isDark ? 'rgba(232,237,245,0.60)' : '#475569';
+  Chart.defaults.borderColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(15,23,42,0.10)';
+}
+updateChartDefaults();
 // ---- Theme-aware chart grid colour ----
 function chartGridColor() {
-  return document.body.classList.contains('light')
-    ? 'rgba(0, 0, 0, 0.22)'
-    : 'rgba(255, 255, 255, 0.08)';
+  return document.body.classList.contains('dark')
+    ? 'rgba(255,255,255,0.07)'
+    : 'rgba(15,23,42,0.08)';
 }
 Chart.defaults.font.family = "'Inter', 'Segoe UI', system-ui, sans-serif";
 Chart.defaults.font.size = 11;
@@ -768,12 +772,12 @@ function makeBarChart(canvasId, labels, datasets, opts = {}) {
         }
       },
       scales: {
-        x: { grid: { display: false }, ticks: { color: '#5a6a7e', font: { size: 10, weight: 500 } } },
+        x: { grid: { display: false }, ticks: { color: Chart.defaults.color, font: { size: 10, weight: 500 } } },
         y: {
           grid: { color: chartGridColor(), drawTicks: false },
           border: { display: false },
           ticks: {
-            color: '#5a6a7e', font: { size: 10 },
+            color: Chart.defaults.color, font: { size: 10 },
             callback: (v) => {
               const u = opts.units;
               if (opts.isCurrency) {
@@ -821,7 +825,10 @@ function makeBarChart(canvasId, labels, datasets, opts = {}) {
 }
 
 function barColors(n) {
-  return Array.from({ length: n }, (_, i) => i === n - 1 ? '#c9a961' : 'rgba(10, 37, 64, 0.38)');
+  const isDark = document.body.classList.contains('dark');
+  const hist   = isDark ? 'rgba(75,163,255,0.55)' : 'rgba(30,100,255,0.42)';
+  const latest = '#c9a961';
+  return Array.from({ length: n }, (_, i) => i === n - 1 ? latest : hist);
 }
 
 // ---- Build Dynamic Chart Grid ----
@@ -2845,6 +2852,7 @@ function toggleTheme() {
   if (btn) btn.textContent = isLight ? 'Dark' : 'Light';
   if (mobileBtn) mobileBtn.textContent = isLight ? 'Dark' : 'Light';
   try { localStorage.setItem('nse-theme', isLight ? 'light' : 'dark'); } catch(e) {}
+  updateChartDefaults();
 
   // Update chart colors without losing company context
   if (activeCompany) {

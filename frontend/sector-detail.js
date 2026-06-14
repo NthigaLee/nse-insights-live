@@ -27,18 +27,36 @@
     if (heatmap) heatmap.style.display = 'none';
     wrap.classList.remove('hidden');
 
+    // Discover all years present in this sector's data
+    const allYearsSet = new Set();
+    _sectorCompanies.forEach(co => {
+      (co.annuals || []).forEach(a => { if (a.year) allYearsSet.add(a.year); });
+    });
+    const allYears = Array.from(allYearsSet).sort((a, b) => b - a); // newest first
+    const latestYear = allYears[0] || 2024;
+    _yearView = String(latestYear);
+
+    // Dynamically build year toggle buttons from actual data
+    const yearToggleEl = wrap.querySelector('.sd-year-toggle');
+    if (yearToggleEl) {
+      yearToggleEl.innerHTML = allYears.map((y, i) =>
+        `<label><input type="radio" name="sd-year" value="${y}"${i === 0 ? ' checked' : ''}> FY ${y}</label>`
+      ).join('');
+    }
+
     // Set hero
     document.getElementById('sd-hero-title').textContent =
       sectorName + ' Sector: The Full Story';
+    const prevYear = allYears[1] || (latestYear - 1);
     document.getElementById('sd-hero-subtitle').textContent =
-      `${_sectorCompanies.length} NSE-listed companies — FY 2024 vs FY 2023`;
+      `${_sectorCompanies.length} NSE-listed companies · FY ${latestYear} vs FY ${prevYear} · ${allYears.length} years of data`;
 
     // Wire tabs
     wrap.querySelectorAll('.sd-tab').forEach(btn => {
       btn.onclick = () => switchTab(btn.dataset.tab);
     });
 
-    // Wire year radio
+    // Wire year radio (now dynamic)
     wrap.querySelectorAll('input[name="sd-year"]').forEach(r => {
       r.onchange = () => { _yearView = r.value; renderActiveTab(); };
     });
@@ -197,19 +215,27 @@
     return _charts[canvasId];
   }
 
-  // Theme-aware chart colors — read from CSS tokens so they adapt to light/dark
+  // Theme-aware chart colors — explicit values for dark/light modes
   function COLORS() {
-    const cs = getComputedStyle(document.body);
-    const v = (n, f) => (cs.getPropertyValue(n).trim() || f);
-    return {
-      bars2024:   v('--navy-900', '#0a3d7a'),
-      bars2023:   v('--navy-400', '#4ba3ff'),
-      accent:     v('--gold-500', '#c9a961'),
-      grid:       v('--chart-grid', 'rgba(10,37,64,0.08)'),
-      text:       v('--text-secondary', '#334155'),
-      textStrong: v('--text-primary', '#0b1726'),
-      title:      v('--navy-800', '#0e4a96'),
-      axisLabel:  v('--text-primary', '#0b1726'),
+    const isDark = document.body.classList.contains('dark');
+    return isDark ? {
+      bars2024:   'rgba(75,163,255,0.80)',
+      bars2023:   'rgba(201,169,97,0.70)',
+      accent:     '#c9a961',
+      grid:       'rgba(255,255,255,0.07)',
+      text:       'rgba(232,237,245,0.60)',
+      textStrong: '#e8edf5',
+      title:      '#82bfff',
+      axisLabel:  'rgba(232,237,245,0.60)',
+    } : {
+      bars2024:   '#1565c0',
+      bars2023:   '#4ba3ff',
+      accent:     '#c9a961',
+      grid:       'rgba(15,23,42,0.08)',
+      text:       '#475569',
+      textStrong: '#0f172a',
+      title:      '#0a3d7a',
+      axisLabel:  '#475569',
     };
   }
 
