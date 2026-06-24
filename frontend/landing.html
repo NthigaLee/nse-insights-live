@@ -13,6 +13,7 @@
   <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
   <link rel="stylesheet" href="tokens.css" />
+  <link rel="stylesheet" href="components.css" />
   <style>
     /* ─── Base ─── */
     body { background: var(--ink-900); color: var(--ink-foreground); }
@@ -324,7 +325,7 @@
     .price-card li::before { content: "✓"; color: #4ade80; font-weight: 800; font-size: 0.9rem; flex-shrink: 0; }
   </style>
 </head>
-<body>
+<body data-surface="marketing">
 
 <!-- ─── NAV ─── -->
 <nav class="nav-wrap" role="navigation" aria-label="Main navigation">
@@ -384,13 +385,13 @@
           <button class="chart-tab" data-ticker="KCB">KCB</button>
           <button class="chart-tab" data-ticker="EABL">EABL</button>
         </div>
-        <span class="chart-live-badge"><span class="led"></span>NSE</span>
+        <span class="chart-live-badge">NSE · 1Y</span>
       </div>
       <div class="chart-price-row">
         <span class="chart-price" id="chart-price">—</span>
         <span class="chart-change" id="chart-change">—</span>
       </div>
-      <canvas id="hero-chart" width="600" height="160"></canvas>
+      <canvas id="hero-chart" width="600" height="160" role="img" aria-label="NSE price chart"></canvas>
     </div>
   </div>
 </section>
@@ -675,57 +676,55 @@ function buildTicker() {
 buildTicker();
 
 // ── Hero live chart ──
+const BRAND   = '#1e88ff';
+const WINDOW  = 52; // last 52 weekly data points
+const TICKERS = ['SCOM', 'EQTY', 'KCB', 'EABL'];
+
 const CHART_DATA = {
-  SCOM: { prices: [], label: 'Safaricom PLC', color: '#1e88ff' },
-  EQTY: { prices: [], label: 'Equity Group',  color: '#4ade80' },
-  KCB:  { prices: [], label: 'KCB Group',     color: '#f59e0b' },
-  EABL: { prices: [], label: 'EABL',          color: '#c084fc' },
+  SCOM: { prices: [], label: 'Safaricom PLC', color: BRAND },
+  EQTY: { prices: [], label: 'Equity Group',  color: BRAND },
+  KCB:  { prices: [], label: 'KCB Group',     color: BRAND },
+  EABL: { prices: [], label: 'EABL',          color: BRAND },
 };
 
-// Generate plausible synthetic daily prices for the last 18 months for each ticker
-function genPrices(seed, basePrice, volatility, n) {
-  let p = basePrice; const out = [];
-  for (let i = 0; i < n; i++) {
-    const rand = (Math.sin(seed * i * 7.3 + 1.1) + Math.sin(seed * i * 3.7 + 0.5)) / 2;
-    p = Math.max(basePrice * 0.4, p * (1 + rand * volatility));
-    out.push(+p.toFixed(2));
-  }
-  return out;
+function hexToRgba(hex, a) {
+  const n = parseInt(hex.slice(1), 16);
+  return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
 }
-CHART_DATA.SCOM.prices = genPrices(1, 18.5, 0.018, 365);
-CHART_DATA.EQTY.prices = genPrices(2, 44,   0.022, 365);
-CHART_DATA.KCB.prices  = genPrices(3, 31.5, 0.020, 365);
-CHART_DATA.EABL.prices = genPrices(4, 172,  0.025, 365);
 
 let activeTicker = 'SCOM';
-let animFrame = null;
-let currentData = [...CHART_DATA.SCOM.prices];
 
 const canvas = document.getElementById('hero-chart');
 const ctx = canvas.getContext('2d');
 
-function drawChart(data, color, pct) {
-  const W = canvas.width, H = canvas.height;
-  const dpr = window.devicePixelRatio || 1;
-  canvas.width  = canvas.offsetWidth * dpr;
-  canvas.height = H * dpr;
-  ctx.scale(dpr, dpr);
-  const w = canvas.offsetWidth, h = H;
-  ctx.clearRect(0, 0, w, h);
+function drawChart(data, color) {
+  const dpr  = window.devicePixelRatio || 1;
+  const cssW = canvas.offsetWidth;
+  const cssH = 160;
+  canvas.width  = Math.round(cssW * dpr);
+  canvas.height = Math.round(cssH * dpr);
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // reset each draw — no compounding
+  ctx.clearRect(0, 0, cssW, cssH);
+
+  if (!data || data.length < 2) return;
 
   const min = Math.min(...data), max = Math.max(...data);
   const range = max - min || 1;
-  const pts = data.map((v, i) => ({ x: (i / (data.length - 1)) * w, y: h - ((v - min) / range) * (h - 10) - 5 }));
+  const pad = 8;
+  const pts = data.map((v, i) => ({
+    x: (i / (data.length - 1)) * cssW,
+    y: cssH - pad - ((v - min) / range) * (cssH - pad * 2)
+  }));
 
   // Gradient fill
-  const grad = ctx.createLinearGradient(0, 0, 0, h);
-  grad.addColorStop(0, color.replace(')', ', 0.25)').replace('rgb', 'rgba'));
-  grad.addColorStop(1, color.replace(')', ', 0)').replace('rgb', 'rgba'));
+  const grad = ctx.createLinearGradient(0, 0, 0, cssH);
+  grad.addColorStop(0, hexToRgba(color, 0.28));
+  grad.addColorStop(1, hexToRgba(color, 0));
 
   ctx.beginPath();
-  ctx.moveTo(pts[0].x, h);
+  ctx.moveTo(pts[0].x, cssH);
   pts.forEach(p => ctx.lineTo(p.x, p.y));
-  ctx.lineTo(pts[pts.length - 1].x, h);
+  ctx.lineTo(pts[pts.length - 1].x, cssH);
   ctx.closePath();
   ctx.fillStyle = grad;
   ctx.fill();
@@ -749,6 +748,11 @@ function drawChart(data, color, pct) {
 function renderActive(ticker) {
   const d = CHART_DATA[ticker];
   const prices = d.prices;
+  if (!prices || prices.length === 0) {
+    document.getElementById('chart-price').textContent = '—';
+    document.getElementById('chart-change').textContent = '—';
+    return;
+  }
   const last = prices[prices.length - 1];
   const first = prices[0];
   const chgPct = ((last - first) / first * 100).toFixed(2);
@@ -759,6 +763,7 @@ function renderActive(ticker) {
   chgEl.textContent = (pos ? '+' : '') + chgPct + '%';
   chgEl.className = 'chart-change ' + (pos ? 'pos' : 'neg');
 
+  canvas.setAttribute('aria-label', d.label + ' price chart — 1 year');
   drawChart(prices, d.color);
 }
 
@@ -785,7 +790,26 @@ setInterval(() => {
   renderActive(activeTicker);
 }, 4000);
 
-renderActive(activeTicker);
+// Fetch real prices from prices.json; fall back gracefully if unavailable
+fetch('prices.json')
+  .then(r => r.ok ? r.json() : Promise.reject())
+  .then(all => {
+    TICKERS.forEach(t => {
+      const arr = (all[t] && all[t].prices) ? all[t].prices : [];
+      // prices.json stores [epoch_ms, close] pairs — pick last WINDOW weekly points
+      const sampled = arr.length > WINDOW
+        ? arr.filter((_, i) => i % Math.floor(arr.length / WINDOW) === 0).slice(-WINDOW)
+        : arr;
+      CHART_DATA[t].prices = sampled.map(p => Array.isArray(p) ? p[1] : p);
+    });
+    renderActive(activeTicker);
+  })
+  .catch(() => {
+    // No prices.json — show placeholder flat line so chart isn't blank
+    TICKERS.forEach(t => { CHART_DATA[t].prices = Array(WINDOW).fill(0).map((_, i) => 100 + i * 0.1); });
+    renderActive(activeTicker);
+  });
+
 window.addEventListener('resize', () => renderActive(activeTicker));
 
 // ── Intersection reveal ──

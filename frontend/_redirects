@@ -9,6 +9,7 @@
 /home               /                         301
 /signup             /login                    301
 /signin             /login                    301
+/index.html         /dashboard.html           301
 
 # Multi-word paths
 /checkout/success   /checkout-success.html    200

@@ -9,7 +9,7 @@
    --ink-* for dark "ink" surfaces.
    ============================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Serif+4:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
   /* Brand — Vivid Blue (#1e88ff family) */
@@ -51,7 +51,7 @@
   --ink-700:           #14233d;
   --ink-foreground:    #e8edf5;
   --ink-foreground-65: rgba(232, 237, 245, 0.65);
-  --ink-foreground-35: rgba(232, 237, 245, 0.35);
+  --ink-foreground-35: rgba(232, 237, 245, 0.65);
 
   /* Glass surface tint */
   --glass-bg:          rgba(255, 255, 255, 0.55);
@@ -86,11 +86,11 @@
   --info:          var(--blue-600);
 
   /* Semantic — LIGHT mode */
-  --bg-base:        var(--cream);
+  --bg-base:        #f0f5fb;
   --bg-surface:     var(--paper);
   --bg-card:        var(--paper);
-  --bg-card-hover:  #fdfbf5;
-  --bg-sunk:        var(--cream-sunk);
+  --bg-card-hover:  #f7fafd;
+  --bg-sunk:        #e6eef7;
   --bg-inverse:     var(--ink-900);
 
   --text-primary:   var(--ink);
@@ -223,9 +223,9 @@ h1, h2, h3, h4, h5 {
 p { margin: 0; color: var(--text-secondary); }
 
 a { color: var(--blue-700); text-decoration: none; transition: color 0.15s ease; }
-a:hover { color: var(--gold-600); }
-body.dark a { color: var(--gold-400); }
-body.dark a:hover { color: var(--gold-300); }
+a:hover { color: var(--blue-600); }
+body.dark a { color: var(--blue-400); }
+body.dark a:hover { color: var(--blue-300); }
 
 button { font-family: inherit; cursor: pointer; }
 input, select, textarea { font-family: inherit; }
@@ -415,7 +415,7 @@ body.dark .metallic-input {
   font-family: var(--font-sans);
   box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18);
 }
-body.dark .brand-mark { background: var(--gold-500); color: var(--ink-900); box-shadow: none; }
+body.dark .brand-mark { background: var(--blue-500); color: #ffffff; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.18); }
 
 /* Utility */
 .eyebrow {

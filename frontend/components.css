@@ -1,0 +1,112 @@
+/* ============================================================
+   NSE Insights — Shared Component Layer
+   Load after tokens.css. Defines one set of components
+   that adapt to the surface skin via data-surface attribute.
+   ============================================================ */
+
+/* ── Surface skins ─────────────────────────────────────────── */
+[data-surface="marketing"] {
+  --card-bg:  rgba(255,255,255,0.03);
+  --card-bd:  rgba(255,255,255,0.08);
+}
+[data-surface="app"] {
+  --card-bg:  #ffffff;
+  --card-bd:  rgba(15,23,42,0.10);
+}
+body.dark[data-surface="app"] {
+  --card-bg:  #111e30;
+  --card-bd:  rgba(255,255,255,0.08);
+}
+
+/* ── Card ───────────────────────────────────────────────────── */
+.card {
+  background: var(--card-bg, var(--bg-card));
+  border: 1px solid var(--card-bd, var(--border));
+  border-radius: 14px;
+}
+
+/* ── Unified Button Scale ───────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 44px;
+  padding: 0 22px;
+  gap: 8px;
+  font: 600 14px/1 "Inter", system-ui, sans-serif;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background .15s, box-shadow .2s, transform .12s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.btn:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.btn:active { transform: translateY(1px); }
+
+.btn--primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+.btn--primary:hover { filter: brightness(1.08); }
+
+.btn--secondary {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--border-strong);
+}
+.btn--secondary:hover { background: var(--accent-soft); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 0;
+  min-height: 40px;
+  padding: 0 16px;
+}
+.btn--ghost:hover { color: var(--text-primary); background: var(--bg-hover, rgba(10,37,64,0.05)); }
+
+/* CTA — metallic blue, 5.7:1 AA contrast on any surface */
+.btn--cta {
+  min-height: 48px;
+  padding: 0 26px;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  background: linear-gradient(180deg, #1e7ae0 0%, #0d47a1 100%);
+  border-color: rgba(255,255,255,0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.28),
+    0 6px 16px rgba(13,71,161,0.45);
+}
+.btn--cta:hover {
+  filter: brightness(1.07);
+  transform: translateY(-1px);
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,0.32),
+    0 10px 22px rgba(13,71,161,0.55);
+}
+@media (max-width: 640px) {
+  .hero .btn--cta { display: block; width: 100%; text-align: center; }
+}
+
+/* ── Input ──────────────────────────────────────────────────── */
+.input {
+  min-height: 44px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid var(--border-strong);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  font: 400 14px/1 "Inter", system-ui, sans-serif;
+  outline: none;
+  transition: border-color .15s, box-shadow .15s;
+}
+.input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}

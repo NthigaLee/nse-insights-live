@@ -19,21 +19,34 @@ git diff --cached --stat
 git status
 
 # 5. Commit
-git commit -m "Fix: charts visible in dark mode; sector years show all available data
+git commit -m "Design handoff: 5 PDF fixes — chart, components, tokens, a11y, hygiene
 
-Dark mode (default):
-- tokens.css: ink-900 (#0a1220) palette, rgba(255,255,255,0.08) borders,
-  #e8edf5 text, #4ade80 / #f87171 gain/loss — matches landing exactly
-- styles.css: topnav rgba(10,18,32,0.85), --bg-hover, dark accent overrides
-- dashboard.html + admin_review.html: body class dark by default
-- login.html: right panel dark ink (inputs, tabs, alerts, links)
-- pricing.html: dark nav, body dark, gold featured plan, blue toggle
+Fix 01 — Hero chart (landing.html):
+- hexToRgba(): gradient fill now works correctly with hex colors
+- ctx.setTransform() replaces ctx.scale() — no more compounding retina
+- Fetches real prices from prices.json (last 52 weekly pts, 4 tickers)
+- Single brand blue #1e88ff; graceful fallback if prices.json absent
+- Static 'NSE x 1Y' badge; canvas role=img + aria-label
 
-Light mode (toggle from dashboard):
-- styles.css body.light: modern blue-white (#f0f5fb bg, white cards,
-  blue-600 accent, slate text, vivid gain/loss colours — not dated cream)
-- app.js: toggleTheme + initTheme default to dark; localStorage persists
-- admin_review.html: same toggle pattern, ☀️/🌙 icons"
+Fix 02 — components.css:
+- New shared component layer: .btn variants, .card, .input
+- data-surface=marketing / data-surface=app on body tags
+- Loaded on all pages after tokens.css
+
+Fix 03 — Brand/gold policy:
+- Blue = interactive in both themes; gold = decoration only
+- tokens.css: light bg-base #f0f5fb, --ink-foreground-35 raised to 0.65
+- styles.css: --navy-* replaced with --blue-*; sd-tab.active uses accent
+
+Fix 04 — Accessibility:
+- Skip link on dashboard.html + .skip-link CSS
+- hamburger aria-label + aria-expanded; theme toggle role=switch
+- hero canvas role=img + aria-label
+
+Fix 05 — Code hygiene:
+- _redirects: /index.html -> /dashboard.html 301
+- dashboard.html: deduped meta tags; Chart.js scripts deferred
+- Font trimmed to wght 400/600/700/800"
 
 # 6. Push
 git push origin main

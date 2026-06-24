@@ -5,18 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#1e88ff" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="NSE Insights" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png" />
   <link rel="apple-touch-icon" href="icons/icon-192.png" />
-
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="NSE Insights" />
-  <meta name="theme-color" content="#050505" />
   <meta name="description" content="NSE Insights - Kenya stock market financial data and analysis dashboard" />
   <title>NSE Insights — Dashboard</title>
-  <link rel="stylesheet" href="styles.css?v=12" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="components.css" />
   <script src="config.js"></script>
   <script src="supabase-client.js"></script>
   <script src="tier-access.js"></script>
@@ -32,11 +29,12 @@
       } catch(e) { /* network error — allow through */ }
     })();
   </script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.1/dist/chartjs-chart-financial.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/chartjs-chart-financial@0.2.1/dist/chartjs-chart-financial.min.js"></script>
 </head>
-<body class="dark">
+<body class="dark" data-surface="app">
+  <a href="#main" class="skip-link">Skip to content</a>
 
   <!-- Top Navigation -->
   <nav class="topnav">
@@ -45,7 +43,7 @@
         <span class="logo-dot"></span>
         <span class="logo-text">NSE Insights</span>
       </a>
-      <button class="hamburger" id="hamburger-menu" onclick="toggleMobileMenu()" title="Menu">
+      <button class="hamburger" id="hamburger-menu" onclick="toggleMobileMenu()" title="Menu" aria-label="Open navigation menu" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -56,7 +54,7 @@
       <a class="nav-link" id="nav-sectors" href="#" onclick="showView('sectors'); return false;">Sectors</a>
     </div>
     <div class="topnav-right nav-desktop">
-      <button class="theme-toggle" id="theme-toggle" title="Toggle light/dark mode" onclick="toggleTheme()">Dark</button>
+      <button class="theme-toggle" id="theme-toggle" role="switch" aria-checked="true" aria-label="Dark theme" title="Toggle light/dark mode" onclick="toggleTheme()">Dark</button>
       <a href="admin_review.html" class="admin-padlock" id="admin-link" title="Admin Review" style="display:none;">A</a>
       <span class="tier-badge" id="tier-badge" style="font-size:.72rem;font-weight:700;padding:.2rem .6rem;border-radius:4px;background:rgba(30,136,255,.12);color:#4ba3ff;display:none;"></span>
       <span id="nav-user-name" style="font-size:.82rem;color:var(--text-secondary);display:none;"></span>

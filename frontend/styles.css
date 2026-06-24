@@ -8,9 +8,9 @@
 :root {
   /* Back-compat aliases so legacy dashboard selectors still resolve */
   --border-light:    var(--border-strong);
-  --accent-primary:  var(--navy-900);
-  --accent-secondary: var(--navy-700);
-  --accent-blue:     var(--navy-700);
+  --accent-primary:  var(--blue-600);
+  --accent-secondary: var(--blue-500);
+  --accent-blue:     var(--blue-600);
   --accent-teal:     #0f766e;
   --accent-gold:     var(--gold-500);
   --green-glow:      rgba(201,169,97,0.14);
@@ -129,6 +129,23 @@ body {
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
 }
+
+/* Skip link (accessibility) */
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: 0;
+  background: var(--accent);
+  color: #fff;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  z-index: 9999;
+  border-radius: 0 0 8px 0;
+  transition: top 0.15s;
+  text-decoration: none;
+}
+.skip-link:focus { top: 0; }
 
 .hidden { display: none !important; }
 
@@ -2347,7 +2364,7 @@ body.light .chart-type-btn:hover { background: rgba(0,0,0,0.06); }
 
 /* Hero banner */
 .sd-hero {
-  background: linear-gradient(135deg, var(--navy-900) 0%, var(--navy-700) 100%);
+  background: linear-gradient(135deg, var(--blue-800) 0%, var(--blue-600) 100%);
   border-radius: 10px;
   padding: 1.5rem 2rem;
   margin-bottom: 1.2rem;
@@ -2562,7 +2579,7 @@ body.light .sd-year-toggle label:has(input:checked) {
   min-height: 120px;
 }
 .sd-treemap-tile {
-  background: var(--navy-700);
+  background: var(--blue-700);
   border-radius: 4px;
   padding: 0.5rem;
   display: flex;
@@ -2969,15 +2986,15 @@ body.dark .sd-hth-pill:hover { color: var(--text-primary); }
 .sd-hero p  { color: var(--gold-300); }
 .sd-year-toggle label { color: var(--gold-200); }
 
-/* Section titles (PAT Ranking etc.) — deep navy in light, gold in dark */
-.sd-section h3, .sd-section h4 { color: var(--navy-800); }
-.sd-ins-rank-title { color: var(--navy-700); }
+/* Section titles (PAT Ranking etc.) */
+.sd-section h3, .sd-section h4 { color: var(--text-primary); }
+.sd-ins-rank-title { color: var(--text-secondary); }
 
-/* Tabs — make default visible on cream */
+/* Tabs — make default visible */
 .sd-tab { color: var(--text-secondary); }
 .sd-tab:hover { color: var(--text-primary); }
-.sd-tab.active { color: var(--navy-900); border-bottom-color: var(--gold-500); font-weight: 600; }
-body.dark .sd-tab.active { color: var(--gold-400); }
+.sd-tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+body.dark .sd-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* Dividend / ranking value highlight */
 .sd-div-val, .sd-ins-rank-val { color: var(--gold-600); }
