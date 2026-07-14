@@ -22,10 +22,22 @@ import datetime
 import gzip
 import json
 import re
+import socket
 import sys
 import time
 import urllib.request
 import zlib
+
+# GitHub Actions runners have no IPv6 route; if a host resolves to AAAA first,
+# urllib can die with [Errno 101] Network is unreachable. Force IPv4.
+_orig_getaddrinfo = socket.getaddrinfo
+
+
+def _ipv4_getaddrinfo(host, port, family=0, *args, **kwargs):
+    return _orig_getaddrinfo(host, port, socket.AF_INET, *args, **kwargs)
+
+
+socket.getaddrinfo = _ipv4_getaddrinfo
 from html.parser import HTMLParser
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -55,12 +67,22 @@ MIN_ROWS = 40          # abort if the table parse finds fewer tickers
 MAX_DAY_MOVE = 0.50    # skip a ticker if price moved >50% vs last stored point
 
 
-def fetch(url: str) -> str:
+def fetch(url: str, attempts: int = 3) -> str:
     req = urllib.request.Request(url, headers={"User-Agent": UA,
                                                "Accept-Encoding": "gzip"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        data = resp.read()
-        enc = (resp.headers.get("Content-Encoding") or "").lower()
+    last_err = None
+    for i in range(attempts):
+        try:
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                data = resp.read()
+                enc = (resp.headers.get("Content-Encoding") or "").lower()
+            break
+        except Exception as e:  # transient network errors: back off and retry
+            last_err = e
+            if i < attempts - 1:
+                time.sleep(5 * (i + 1))
+    else:
+        raise last_err
     if enc == "gzip" or data[:2] == b"\x1f\x8b":
         data = gzip.decompress(data)
     elif enc == "deflate":
