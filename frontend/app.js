@@ -614,7 +614,8 @@ function calcCurrentRatio(latest, prev) {
 // prices.json format: { "TICKER": { name, sector, prices: [[timestamp_ms, close], ...] } }
 async function loadPrices() {
   try {
-    const resp = await fetch('prices.json?v=4');
+    // Rolling hourly cache-buster: prices update intraday via GitHub Action.
+    const resp = await fetch('prices.json?d=' + new Date().toISOString().slice(0, 13));
     if (resp.ok) NSE_PRICES = await resp.json();
   } catch (e) {
     NSE_PRICES = {};
@@ -2068,7 +2069,7 @@ let NSE_MARKET = null;
 
 async function loadMarketData() {
   try {
-    const resp = await fetch('market.json?v=4');
+    const resp = await fetch('market.json?d=' + new Date().toISOString().slice(0, 13));
     if (resp.ok) NSE_MARKET = await resp.json();
   } catch (e) {
     NSE_MARKET = null;

@@ -1,6 +1,6 @@
 // NSE Insights — service worker
 // Versioned cache; update CACHE_VERSION on each deploy to bust caches.
-const CACHE_VERSION = 'nse-insights-v8';
+const CACHE_VERSION = 'nse-insights-v9';
 const STATIC_ASSETS = [
   '/landing.html',
   '/dashboard.html',
@@ -54,6 +54,21 @@ self.addEventListener('fetch', (event) => {
         caches.open(CACHE_VERSION).then(c => c.put(req, copy)).catch(()=>{});
         return res;
       }).catch(() => caches.match(req).then(r => r || caches.match('/landing.html')))
+    );
+    return;
+  }
+
+  // JSON data (prices.json / market.json) — network-first so intraday
+  // price updates reach returning users; cache fallback keeps offline working.
+  if (url.pathname.endsWith('.json')) {
+    event.respondWith(
+      fetch(req).then(res => {
+        if (res && res.ok && url.origin === self.location.origin) {
+          const copy = res.clone();
+          caches.open(CACHE_VERSION).then(c => c.put(req, copy)).catch(()=>{});
+        }
+        return res;
+      }).catch(() => caches.match(req))
     );
     return;
   }

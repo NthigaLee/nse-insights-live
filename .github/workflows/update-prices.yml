@@ -2,12 +2,25 @@ name: Update NSE Prices
 
 on:
   schedule:
-    # Run at 3:30 PM UTC (6:30 PM EAT) on weekdays — after NSE market close
-    - cron: '30 15 * * 1-5'
-  workflow_dispatch: # Allow manual trigger
+    # NSE continuous session: 09:30-15:00 EAT = 06:30-12:00 UTC, Mon-Fri.
+    # Hourly during the session + one post-close run (GitHub cron may lag ~5-15 min).
+    - cron: "35 6-11 * * 1-5"   # 09:35 ... 14:35 EAT
+    - cron: "10 12 * * 1-5"     # 15:10 EAT (after close)
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "daily | backfill"
+        default: "daily"
+      since:
+        description: "backfill cutoff date (YYYY-MM-DD)"
+        default: "2025-10-31"
 
 permissions:
   contents: write
+
+concurrency:
+  group: update-prices
+  cancel-in-progress: false
 
 jobs:
   update-prices:
@@ -18,24 +31,22 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: "3.12"
 
-      - name: Install dependencies
-        run: pip install yfinance requests beautifulsoup4
-
-      - name: Fetch latest prices
-        run: python backend/fetch_prices.py
-
-      - name: Copy updated files to docs/
+      # backend/update_prices.py is stdlib-only — no pip install needed.
+      - name: Update prices
         run: |
-          cp frontend/market.json docs/market.json 2>/dev/null || true
-          cp frontend/prices.json docs/prices.json 2>/dev/null || true
+          if [ "${{ github.event.inputs.mode }}" = "backfill" ]; then
+            python backend/update_prices.py --backfill --since "${{ github.event.inputs.since }}"
+          else
+            python backend/update_prices.py
+          fi
 
       - name: Commit and push if changed
         run: |
-          git config user.name "github-actions[bot]"
+          git config user.name "nse-price-bot"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add frontend/market.json docs/market.json data/nse/prices.json frontend/prices.json docs/prices.json
+          git add frontend/prices.json frontend/market.json
           git diff --cached --quiet && echo "No changes to commit" && exit 0
-          git commit -m "chore: update NSE prices $(date -u +%Y-%m-%d)"
+          git commit -m "prices: auto-update $(date -u +'%Y-%m-%d %H:%M UTC')"
           git push
