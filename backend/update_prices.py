@@ -309,6 +309,10 @@ def run_backfill(since: str, dry: bool) -> int:
     save_json(PRICES, prices, dry)
     if failures:
         print(f"failed tickers: {', '.join(failures)}", file=sys.stderr)
+    # A run that fetched nothing must FAIL the workflow, not show green.
+    if len(failures) >= len(targets) // 2:
+        print(f"ABORT: {len(failures)}/{len(targets)} tickers failed — source unreachable?", file=sys.stderr)
+        return 1
     return 0
 
 
