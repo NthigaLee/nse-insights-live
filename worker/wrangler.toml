@@ -1,0 +1,24 @@
+# NSE Insights — live prices Worker.
+# Deploy:  cd worker && npx wrangler deploy
+# First time: npx wrangler kv namespace create PRICES_KV  → paste the id below.
+
+name = "nse-prices"
+main = "nse-prices-worker.js"
+compatibility_date = "2026-07-01"
+
+# Serve /prices.json and /market.json on the site domain (KV-first, static fallback).
+routes = [
+  { pattern = "nseinsights.com/prices.json", zone_name = "nseinsights.com" },
+  { pattern = "nseinsights.com/market.json", zone_name = "nseinsights.com" },
+]
+
+# NSE continuous session 09:30-15:00 EAT = 06:30-12:00 UTC, Mon-Fri.
+[triggers]
+crons = [
+  "35 6-11 * * 1-5",  # hourly 09:35-14:35 EAT
+  "10 12 * * 1-5",    # 15:10 EAT close run
+]
+
+[[kv_namespaces]]
+binding = "PRICES_KV"
+id = "REPLACE_WITH_KV_NAMESPACE_ID"

@@ -75,6 +75,30 @@ Fix in the same PR as the pipeline:
 1. **kwayisi freshness** — load https://afx.kwayisi.org/nse/ in a browser and confirm the price table reflects the current/most recent session (compare KCB vs african-markets).
 2. **african-markets chart endpoint** — open a company page with DevTools/network capture, grab the XHR the Highcharts chart calls, confirm it returns ≥1Y of daily closes → use for the Oct-2025→now backfill.
 
+## 7a. Cloudflare Worker (Option A — added 2026-07-23)
+
+GitHub runners proved unreliable (kwayisi drops most of their IPs; ~1 success in 50 runs). The daily job moved to a Cloudflare Worker with Cron Triggers: `worker/nse-prices-worker.js` + `worker/wrangler.toml`.
+
+- **scheduled** (same market-hours cron): fetch kwayisi → parse → upsert today's closes into the full history in **Workers KV** → rebuild market.json.
+- **fetch**: routes `nseinsights.com/prices.json` + `/market.json` serve from KV (header `X-Data-Source: kv`), falling back to the Pages static files when KV is empty. Frontend unchanged.
+- KV seeds itself from the static prices.json on first run — **run the local backfill and push it BEFORE deploying the Worker**, or KV will seed without the Nov 2025–Jul 2026 history.
+
+Deploy (once):
+1. `cd worker && npx wrangler login`
+2. `npx wrangler kv namespace create PRICES_KV` → paste the id into `wrangler.toml`
+3. `npx wrangler deploy`
+4. After the next market-hours cron: `curl -sI https://nseinsights.com/market.json` should show `X-Data-Source: kv`, and the body a fresh `updated_at`. Live log: `npx wrangler tail nse-prices`.
+
+The GitHub workflow can stay as a belt-and-braces archiver (its commits keep the static fallback file fresh-ish); once the Worker is proven you may also just disable its schedule.
+
+## 8. Go-live checklist (what's NOT yet on nseinsights.com as of 2026-07-23)
+
+1. `git pull` (bot commit from Jul 22 is on origin, not in your working copy).
+2. **Backfill** (still pending): `python backend/update_prices.py --backfill` → closes the Nov 2025→Jul 2026 gap in the static file. MUST happen before Worker deploy (see §7a).
+3. Commit + push: backfilled `prices.json`, the fail-loudly patch in `update_prices.py`, and `worker/`.
+4. Deploy the Worker (§7a steps).
+5. Separate track — UI consolidation from the June handoff (new tokens.css, navy→blue sweep, account.html migration): still waiting on the `patched/`+`fixes/` folders being copied into this repo folder.
+
 ## 7. Compliance note
 
 Both sources are third-party sites; neither offers a formal free API. Keep request volume minimal (≤ ~10 requests/day to kwayisi, 1/day validation to african-markets), set a UA identifying the site, and review their terms — if NSE Insights charges for market-data display, the licensed NSE data feed is the correct long-term source.
