@@ -678,7 +678,7 @@ buildTicker();
 // ── Hero live chart ──
 const BRAND   = '#1e88ff';
 const WINDOW  = 52; // last 52 weekly data points
-const TICKERS = ['SCOM', 'EQTY', 'KCB', 'EABL'];
+const CHART_TICKERS = ['SCOM', 'EQTY', 'KCB', 'EABL'];
 
 const CHART_DATA = {
   SCOM: { prices: [], label: 'Safaricom PLC', color: BRAND },
@@ -794,7 +794,7 @@ setInterval(() => {
 fetch('prices.json')
   .then(r => r.ok ? r.json() : Promise.reject())
   .then(all => {
-    TICKERS.forEach(t => {
+    CHART_TICKERS.forEach(t => {
       const arr = (all[t] && all[t].prices) ? all[t].prices : [];
       // prices.json stores [epoch_ms, close] pairs — pick last WINDOW weekly points
       const sampled = arr.length > WINDOW
@@ -806,7 +806,7 @@ fetch('prices.json')
   })
   .catch(() => {
     // No prices.json — show placeholder flat line so chart isn't blank
-    TICKERS.forEach(t => { CHART_DATA[t].prices = Array(WINDOW).fill(0).map((_, i) => 100 + i * 0.1); });
+    CHART_TICKERS.forEach(t => { CHART_DATA[t].prices = Array(WINDOW).fill(0).map((_, i) => 100 + i * 0.1); });
     renderActive(activeTicker);
   });
 
